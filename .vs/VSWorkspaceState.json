@@ -1,7 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\DemoSessions",
+    "\\DemoSessions\\DemoSession4",
+    "\\DemoSessions\\DemoSession5",
+    "\\DemoSessions\\DemoSession5\\DemoSession5"
   ],
-  "SelectedNode": "\\DemoSession2.sln",
+  "SelectedNode": "\\DemoSessions\\DemoSession4\\DemoSession4OOP",
   "PreviewInSolutionExplorer": false
 }

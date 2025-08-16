@@ -1,4 +1,5 @@
-﻿using System.IO.Pipes;
+﻿using System.Collections.Generic;
+using System.IO.Pipes;
 using System.Text;
 
 namespace Demo_1
@@ -614,26 +615,32 @@ namespace Demo_1
 
             #endregion
 
-            #region String
+            #region String (System.String)
+            ///Immutable => Can't be changed once they're created
+            ///Any modification on the string creates a new one, leaving the original unchanged
+            ///Best for small text operations or when text changes rarely.
+            /// Array of Characters
+            /// string and String are the same (alias vs. class name).
+
 
             #region Example 01
-
             //string name;
 
             //name = new string("Route");
             //Console.WriteLine($"Name {name}"); //   Route
-            //Console.WriteLine($"Hashcode Name{name.GetHashCode()}"); 
+            //Console.WriteLine($"Hashcode Name: {name.GetHashCode()}");
 
             //string name02 = "Route";
+            /////CLR checks if string exists in string bool
+            /////if exists => assignes the address to the exsisted string  (reuse memory location)
+            /////if not => adds new string in string pool
+
             //Console.WriteLine($"Name {name02}");
-            //Console.WriteLine($"Hashcode Name{name02.GetHashCode()}"); // same hash code 
-
-
+            //Console.WriteLine($"Hashcode Name: {name02.GetHashCode()}"); // same hash code 
 
             #endregion
 
             #region Example 02
-
             //string name01 = "Amr";
             //string name02 = "May";
 
@@ -642,16 +649,15 @@ namespace Demo_1
             //Console.WriteLine($"Name {name02}");
             //Console.WriteLine($"Hashcode Name {name02.GetHashCode()}");
 
-            //name02 = name01; // may is unreachable object
+            //name02 = name01; // May is unreachable object
             //Console.WriteLine("After Assign name02 = name01 ");
             //Console.WriteLine($"Name {name02}");
             //Console.WriteLine($"Hashcode Name {name02.GetHashCode()}");
 
-            //name01 = "oamr";
+            //name01 = "Omar";
             //Console.WriteLine("After changing name01");
             //Console.WriteLine($"Name {name01}");
             //Console.WriteLine($"Hashcode Name {name01.GetHashCode()}");
-
 
             #endregion
 
@@ -671,7 +677,6 @@ namespace Demo_1
             #endregion
 
             #region String Method
-
             //string message = "  Hello Route  ";
             //Console.WriteLine(message.Length);
             //Console.WriteLine(message.ToUpper());
@@ -679,18 +684,20 @@ namespace Demo_1
             //Console.WriteLine(message.Trim());
             //Console.WriteLine(message.TrimStart());
             //Console.WriteLine(message.TrimEnd());
-            //Console.WriteLine(message.Substring(0,5));
-            //Console.WriteLine(message.Replace('e' , 'm'));
+            //Console.WriteLine(message.Substring(0, 5));
+            //Console.WriteLine(message.Replace('e', 'm'));
             //Console.WriteLine(message.Contains('o'));
 
             #endregion
 
+            #region Stringbuilder (System.Text)
+            ///Mutable string type → allows modifications without creating new objects.
+            ///Efficient for frequent modifications (append, insert, remove).
+            ///Much faster than string when doing lots of concatenations in loops.Mutable string type → allows modifications without creating new objects.
+            ///Efficient for frequent modifications (append, insert, remove).
+            ///Much faster than string when doing lots of concatenations in loops.
 
-            #region Stringbuilder
-
-            //StringBuilder message;
-
-            //message = new StringBuilder("Hello");
+            //StringBuilder message = new StringBuilder("Hello");
 
             //Console.WriteLine(message); // Hello
             //Console.WriteLine(message.GetHashCode());
@@ -703,8 +710,6 @@ namespace Demo_1
             //message.Append(" Academy");
             //Console.WriteLine(message); // Route Academy
             //Console.WriteLine(message.GetHashCode()); //same hashcode
-
-
             #endregion
 
             #region Array
@@ -839,20 +844,19 @@ namespace Demo_1
 
             #region Passing By Reference
 
-            int A = 10, B = 5;
-            Console.WriteLine($"A = {A}");
-            Console.WriteLine($"B = {B}");
+            //int A = 10, B = 5;
+            //Console.WriteLine($"A = {A}");
+            //Console.WriteLine($"B = {B}");
 
-            Swap(ref A, ref B); //Passing By Reference
-            Console.WriteLine("After Swapping");
-            Console.WriteLine($"A = {A}");
-            Console.WriteLine($"B = {B}");
+            //Swap(ref A, ref B); //Passing By Reference
+            //Console.WriteLine("After Swapping");
+            //Console.WriteLine($"A = {A}");
+            //Console.WriteLine($"B = {B}");
 
 
 
             #endregion
             #endregion
-
 
             #endregion
         }
