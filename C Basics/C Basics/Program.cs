@@ -185,6 +185,28 @@ namespace Demo_1
             //Console.WriteLine(B); //Due To Overflow
 
             //Protective Code
+
+            #region Boxing and Unboxing
+            #region Boxing: Value type → Object (implicit). Safe
+            //Happens implicitly (no cast needed).
+            //Converting a value type (like int, char, struct) into an object (reference type).
+            //It “wraps” the value type inside an object on the heap.
+
+            int x = 42;           // value type (stack)
+            object obj = x;    // Boxing: int → object (stored in heap)
+            Console.WriteLine(obj); 
+            #endregion
+
+            #region Unboxing: Object → Value type(explicit). Unsafe
+            //Unboxing => Extracting the value type from the object back.
+
+            object Object = "Aliaa";       // Boxing
+            int y = (int)Object;      // Unboxing (explicit cast required)
+                                   // You Passed CLR but Runtime will give error
+            Console.WriteLine(y); 
+            #endregion
+
+            #endregion
             #endregion
 
             #region Convert
