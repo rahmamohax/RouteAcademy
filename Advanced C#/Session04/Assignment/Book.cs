@@ -15,7 +15,6 @@ namespace Assignment
         public DateTime PublicationDate { get; set; }
         public decimal Price { get; set; }
 
-        // Constructor
         public Book(string _ISBN, string _Title, string[] _Authors, DateTime _PublicationDate, decimal _Price)
         {
             ISBN = _ISBN;
@@ -25,7 +24,6 @@ namespace Assignment
             Price = _Price;
         }
 
-        // Override ToString
         public override string ToString()
         {
             return $"ISBN: {ISBN}, Title: {Title}, Authors: {string.Join(", ", Authors)}, " +
