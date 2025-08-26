@@ -69,7 +69,7 @@ namespace DemoSession1
 
             Employee[] employees =
             {
-                new Employee(10, "ALi", 5000),
+                new Employee(10, "Ali", 5000),
                 new Employee(20, "Maram", 15000),
                 new Employee(30, "Amr", 2000),
                 new Employee(40, "Wael", 3000),
