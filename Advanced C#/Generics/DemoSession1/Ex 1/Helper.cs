@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace DemoSession1.Ex_1
 {
-    internal static class Helper<T1, T2> where T1 : class where T2 : struct, IEquatable<T2>
+        //internal static class Helper<T1, T2> where T1 : class where T2 : struct, IEquatable<T2>
         //internal static class Helper<T> where T : class, IEquatable<T> ,IEqualityComparer<T>
-        //internal static class Helper<T> where T : IEquatable<T>
-    {
+        internal static class Helper<T> where T : IEquatable<T>
+        {
         public static void Swap(ref T a, ref T b)
         {
             T temp = a;
