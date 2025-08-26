@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DemoSession1.Ex_1
 {
-    internal class Point
+    internal class Point : IEquatable<Point>
     {
 
         public int X { get; set; }
@@ -21,6 +21,11 @@ namespace DemoSession1.Ex_1
         public override string ToString()
         {
             return $"({X}, {Y})";
+        }
+
+        public bool Equals(Point? other)
+        {
+            throw new NotImplementedException();
         }
     }
 }
