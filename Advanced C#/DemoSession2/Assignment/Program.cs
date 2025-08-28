@@ -4,28 +4,27 @@ namespace Assignment
 {
     class Program
     {
-        //public static List<int> ReturnEven(List<int> list)
-        //{
-        //    List<int> result = new List<int>();
+        public static List<int> ReturnEven(List<int> list)
+        {
+            List<int> result = new List<int>();
 
-        //    foreach (int item in list)
-        //    {
-        //        if (item % 2 == 0)
-        //            result.Add(item);
-        //    }
-        //    return result;  
-        //}
-
+            foreach (int item in list)
+            {
+                if (item % 2 == 0)
+                    result.Add(item);
+            }
+            return result;
+        }
         public static void PrintGreaterThan(int size, int NoOFQueries)
         {
             int[] array = new int[size];
             int count, num;
             for (int i = 0; i < size; i++)
-                while (!int.TryParse(Console.ReadLine(),out array[i]));
-            
+                while (!int.TryParse(Console.ReadLine(), out array[i])) ;
+
             for (int i = 0; i < NoOFQueries; i++)
             {
-                while (!int.TryParse(Console.ReadLine(), out num));
+                while (!int.TryParse(Console.ReadLine(), out num)) ;
                 count = 0;
 
                 foreach (var item in array)
@@ -33,28 +32,71 @@ namespace Assignment
                 Console.WriteLine(count);
             }
         }
+
         public static void isPlaindrome(int[] array)
         {
             bool isvalid = true;
-  
+
             for (int i = 0; i < array.Length / 2; i++)
             {
-                if (array[i] != array[array.Length - i - 1]){
+                if (array[i] != array[array.Length - i - 1])
+                {
                     isvalid = false;
                     break;
                 }
-            } 
+            }
             Console.WriteLine((isvalid) ? "YES" : "NO");
         }
 
-        static int[] RemoveDuplicates(ref int[] arr)
+        public static int[] RemoveDuplicates(ref int[] arr)
         {
             return arr.Distinct().ToArray();
 
         }
 
+        public static int NonRepeatChar(string s)
+        {
+            Dictionary<char, int> freq = new Dictionary<char, int>();
+            foreach (char c in s)
+            {
+                if (freq.ContainsKey(c))
+                    freq[c]++;
+                else freq[c] = 1;
+            }
+
+            for (int i = 0; i < s.Length; i++)
+                if (freq[s[i]] == 1) return i;
+
+            return -1;
+        }
+
         public static void Main(string[] args)
         {
+            #region Given an array  consists of  numbers with size N and number of queries, in each query you will be given an integer X, and you should print how many numbers in array that is greater than  X.
+            //Input
+            //3 3                    //Size of array , number of queries
+            //11 5 3             //Array 
+            //1                      //Query1
+            //5                     //Query2
+            //13                  //Query 3
+            //Output
+            //3                   //11,5,3
+            //1                  //11
+            //0
+
+            string[]? input;
+            int x, y;
+            do
+            {
+                Console.Write("Size, No. of Queries: ");
+                input = Console.ReadLine()?.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            } while (input.Length != 2 ||
+                       !int.TryParse(input[0], out x) ||
+                       !int.TryParse(input[0], out y));
+
+            PrintGreaterThan(x, y);
+
+            #endregion
             #region You are given a list of integers. Your task is to find and return a new list containing only the even numbers from the given list.
 
             //List<int> ints = new List<int> (new int[] {1, 2, 3, 4, 5, 6, 7, 8 } );
@@ -99,30 +141,6 @@ namespace Assignment
             //    Console.WriteLine($"Error: {ex.Message}");
             //}
             #endregion
-            #region Given an array  consists of  numbers with size N and number of queries, in each query you will be given an integer X, and you should print how many numbers in array that is greater than  X.
-            //Input
-            //3 3                    //Size of array , number of queries
-            //11 5 3             //Array 
-            //1                      //Query1
-            //5                     //Query2
-            //13                  //Query 3
-            //Output
-            //3                   //11,5,3
-            //1                  //11
-            //0
-            //string[] input;
-            //int x, y;
-            //do
-            //{
-            //   input= Console.ReadLine().Split(" ");
-
-            //}
-            //while (input.Length !=2 ||
-            //        !int.TryParse(input[0], out x) ||
-            //        !int.TryParse(input[1], out y));
-
-            //PrintGreaterThan(x, y);
-            #endregion
             #region Given a number N and an array of N numbers. Determine if it's palindrome or not.
             //int x= 99;
             //string input="";
@@ -156,6 +174,14 @@ namespace Assignment
             #endregion
 
             #region Given an array list, implement a function to remove all odd numbers from it. 
+
+            #endregion
+
+            #region Given a string, find the first non-repeated character in it and return its index. If there is no such character, return 
+
+            //Console.WriteLine(NonRepeatChar("leetcode"));
+            //Console.WriteLine(NonRepeatChar("loveleetcode"));
+            //Console.WriteLine(NonRepeatChar("aabb"));
 
             #endregion
 
