@@ -177,28 +177,15 @@ namespace Assignment
 
             #region 7. Select all orders where the order was made in 1998 or later.
 
-            var res = CustomerList?.SelectMany(c => c.Orders)
-                .Where(o => o.OrderDate.Year >= 1998);
+            //var res = CustomerList?.SelectMany(c => c.Orders)
+            //    .Where(o => o.OrderDate.Year >= 1998);
 
-            foreach (var item in res)
-                Console.WriteLine(item);
+            //foreach (var item in res)
+            //    Console.WriteLine(item);
             #endregion
 
             #endregion
 
-            #region 2. Return the first product whose Price > 1000, unless there is no match, in which case null is returned.
-
-            //var result = ProductList?.FirstOrDefault(p => p.UnitPrice > 1000);
-            //if (result is not null)
-            //    Console.WriteLine(result);
-            //else Console.WriteLine("No Match Found");
-            #endregion
-
-            #region 3. Retrieve the second number greater than 5 
-            int[] Arr = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
-            var result = Arr.Where(x => x > 5).ElementAt(1);
-            Console.WriteLine(result); // 8
-            #endregion
         }
 
     }
