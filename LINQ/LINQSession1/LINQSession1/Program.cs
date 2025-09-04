@@ -228,14 +228,186 @@ namespace LINQSession1
             //    .Select(p => p.ProductName).Reverse();
 
 
-            var res = ProductList?.Where(p => p.ProductName?.Length < 10)
-                .Select(p => p.ProductName)
-                .OrderBy(s=> s?.Length);
- 
-            foreach (var item in res)
-                Console.WriteLine(item);
+            //var res = ProductList?.Where(p => p.ProductName?.Length < 10)
+            //    .Select(p => p.ProductName)
+            //    .OrderBy(s=> s?.Length);
+
+            //foreach (var item in res)
+            //    Console.WriteLine(item);
 
             #endregion
+
+            #region Element Operators [First, Last, ElementAt, Single]
+            //var result = ProductList?.First(); // can throw exception
+            //result = ProductList?.Last();
+            //Console.WriteLine(result);
+
+            //List<Product> list = new List<Product>();
+            ////var first= list.First();
+            //var first = list.FirstOrDefault(new Product()); // more protective
+            //Console.WriteLine(first); //null: will throw exception
+
+            //var result = ProductList?.ElementAt(1); //second element
+            //var result = ProductList?.ElementAt(new Index(1, true)); //First element from end [1-Based Indexing]
+            //result = ProductList?.ElementAt(^1); //First element from end [1-Based Indexing]
+
+            //var result = ProductList?.ElementAtOrDefault(100); //more protective
+            //Console.WriteLine(result);
+
+            //var res = ProductList?.SingleOrDefault( p=> p.ProductID==1);
+            //Console.WriteLine(res);
+
+
+            //Hybrid Syntax
+            //var result = (from p in ProductList
+            //             where p.UnitPrice > 20
+            //             select p).FirstOrDefault();
+
+            //Console.WriteLine(result);
+
+            #endregion
+
+            #region Aggregate Operators [Count, Sum, Avg]
+            //var result = ProductList.Count(); //LINQ Count
+            //result = ProductList.Count; // List Property 
+
+            //var result = ProductList?.Where(p=> p.UnitsInStock == 0).Count();
+            //result = ProductList?.Count(p => p.UnitsInStock == 0);
+            //Console.WriteLine(result);
+
+            //var sum = ProductList.Sum(x => x.UnitPrice);
+            //var avg = ProductList.Average(x => x.UnitPrice);
+            //Console.WriteLine(sum);
+            //Console.WriteLine(avg);
+
+            //var max = ProductList?.Max(p => p.ProductName);
+
+            //var res = (from p in ProductList
+            //          where p.ProductName == max
+            //          select p).FirstOrDefault();
+            //Console.WriteLine(res);
+
+            #region Aggregate
+            //Will be Usful when Using APIs
+            //string[] words = ["Hello", "From", "the", "Other", "Sideeeeee"];
+
+            //var res = words.Aggregate((st1, st2) => $"{st1} {st2}");
+            ////st1= 'Hello', st2= 'From'
+            ////st1 = 'Hello From', st2 = 'the'
+            ////st1 = 'Hello From the' , st2 = 'Other' ....
+
+            //res = words.Aggregate("Adel Once Said:", (st1, st2) => $"{st1} {st2}");
+            //Console.WriteLine(res);
+
+            #endregion
+
+            #endregion
+
+            #region Casting Operators
+            //var res= ProductList?.Where(p => p.UnitPrice > 0).ToList(); //Casting to List
+
+            //Dictionary<long, Product> products = ProductList.Where(p => p.UnitsInStock ==0).ToDictionary(p => p.ProductID, p => p);
+            //foreach (var item in products)
+            //    Console.WriteLine(item.Key +" " + item.Value);
+
+            #endregion
+
+            #region Generation Operators
+            //Enumerable.Range(1, 100); //1..100
+            //Enumerable.Repeat(2, 50);
+
+            //var prods = Enumerable.Repeat(new Product() { Category = "Meat" }, 5); //5 products with category Meat
+
+            #endregion
+
+            #region Set Operators [Union, Intersect, Except]
+
+            //var products1 = new List<Product>()
+            //{
+            //    new Product {ProductID = 1, ProductName = "Chai", Category = "Beverages", UnitPrice = 18.00M, UnitsInStock = 100},
+            //    new Product {ProductID = 1, ProductName = "Chai", Category = "Beverages", UnitPrice = 18.00M, UnitsInStock = 100},
+            //    new Product{ ProductID = 2, ProductName = "Chang", Category = "Beverages", UnitPrice = 19.0000M, UnitsInStock = 17 },
+            //    new Product{ ProductID = 3, ProductName = "Aniseed Syrup", Category = "Condiments", UnitPrice = 10.0000M, UnitsInStock = 13 },
+            //    new Product{ ProductID = 4, ProductName = "Chef Anton's Cajun Seasoning", Category = "Condiments", UnitPrice = 22.0000M, UnitsInStock = 53 },
+            //}; 
+            //var products2 = new List<Product>()
+            //{
+            //    new Product{ ProductID = 2, ProductName = "Chang", Category = "Beverages", UnitPrice = 19.0000M, UnitsInStock = 17 },
+            //    new Product{ ProductID = 4, ProductName = "Chef Anton's Cajun Seasoning", Category = "Condiments", UnitPrice = 22.0000M, UnitsInStock = 53 },
+            //    new Product{ ProductID = 5, ProductName = "Chef Anton's Gumbo Mix", Category = "Condiments",UnitPrice = 21.3500M, UnitsInStock = 0 },
+            //};
+
+            //var union = products1.Union(products2); // 1, 2, 3, 4, 5
+            //union = products1.UnionBy(products2, keySelector: p=> p.ProductID);  //compares with ID
+
+
+            //var intersect = products1.Intersect(products2); // 2, 4
+
+            //var except = products1.Except(products2); //1, 5 //product1 ايه الي موجود في 
+            //product2 مش موجود في 
+
+            //var dis = products1.Distinct();
+            //dis = products1.DistinctBy(x => x.ProductID);
+
+            //foreach (var item in dis) 
+            //    Console.WriteLine(item);
+            #endregion
+
+            #region Quantifier Operators - Return Boolean
+
+            //Console.WriteLine(ProductList?.Any()); //true
+            //Console.WriteLine(ProductList?.Any(p => p.UnitsInStock == 0)); //true
+
+            //Console.WriteLine(ProductList?.All(p => p.UnitsInStock == 0)); //false
+
+            //var products1 = new List<Product>()
+            //{
+            //    new Product {ProductID = 1, ProductName = "Chai", Category = "Beverages", UnitPrice = 18.00M, UnitsInStock = 100},
+            //    new Product{ ProductID = 2, ProductName = "Chang", Category = "Beverages", UnitPrice = 19.0000M, UnitsInStock = 17 },
+            //    new Product{ ProductID = 3, ProductName = "Aniseed Syrup", Category = "Condiments", UnitPrice = 10.0000M, UnitsInStock = 13 },
+            //    new Product{ ProductID = 4, ProductName = "Chef Anton's Cajun Seasoning", Category = "Condiments", UnitPrice = 22.0000M, UnitsInStock = 53 },
+            //};
+
+            //Console.WriteLine(ProductList?.Contains(products1[0])); //true
+
+            #endregion
+
+            #region Let - Into
+
+            //var res = from p in ProductList
+            //          where p.UnitPrice * .9m > 10
+            //          select new
+            //          {
+            //              p.ProductName,
+            //              Price = p.UnitPrice * .9m
+            //          };
+
+            //using let
+            //var res = from p in ProductList
+            //          let Price= p.UnitPrice * 0.9m
+            //          where Price < 10
+            //          select new
+            //          {
+            //              p.ProductName,
+            //              Price
+            //          };
+
+
+            //using into
+            //var res = from p in ProductList
+            //      select p.UnitPrice * 0.9m
+            //      into Price
+            //      where Price < 10
+            //      select Price;
+
+            //foreach (var item in res)
+            //{
+            //    Console.WriteLine(item); 
+            //}
+
+            #endregion
+
+
         }
     }
 }
