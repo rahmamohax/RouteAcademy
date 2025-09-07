@@ -407,6 +407,36 @@ namespace LINQSession1
 
             #endregion
 
+            #region Partitioning Operators
+
+            //var result = ProductList.Where(p => p.UnitPrice > 0).Take(5);
+            //var result = ProductList.Where(p => p.UnitPrice > 0).TakeLast(5);
+
+            //var result = ProductList.Where(p => p.UnitPrice > 0).Skip(5); // skips first 5 and returns everything else
+            //var result = ProductList.Where(p => p.UnitPrice > 0).Skip(5).Take(5);
+
+            //int[] ints = [5, 4, 7, 8, 9, 6, 3, 1, 2, 3];
+
+            //var res = ints.TakeWhile((n, i) => n > i); //5 4 7 8 9 6
+            //var res = ints.Where((n, i) => n > i);   //5 4 7 8 9 6
+
+
+
+            int[] ints = [5, 4, 7, 8, 9, 6, 3, 1, 2, 3];
+            var res = ints.Chunk(3);
+
+            foreach (var item in res)
+                {
+                foreach (var i in item)
+                {
+                    Console.Write(i + " ");   
+                }
+                Console.WriteLine();
+            }
+
+
+            #endregion
+
 
         }
     }
