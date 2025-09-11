@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ItiProject.Models
+namespace ItiProject.Data.Models
 {
-    internal class Department
+    internal class Topic
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public DateTime HiringDate { get; set; }
+        public string Name { get; set; } = null!;
+        public List<Course> Courses { get; set; }
     }
 }

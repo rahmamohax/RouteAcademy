@@ -1,4 +1,4 @@
-﻿using ItiProject.Models;
+﻿using ItiProject.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

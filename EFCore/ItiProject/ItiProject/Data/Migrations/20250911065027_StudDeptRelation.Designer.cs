@@ -4,6 +4,7 @@ using ItiProject.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ItiProject.Data.Migrations
 {
     [DbContext(typeof(ItiDbContex))]
-    partial class ItiDbContexModelSnapshot : ModelSnapshot
+    [Migration("20250911065027_StudDeptRelation")]
+    partial class StudDeptRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,35 +47,9 @@ namespace ItiProject.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("TopicId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("TopicId");
-
                     b.ToTable("Courses");
-                });
-
-            modelBuilder.Entity("ItiProject.Data.Models.Course_Inst", b =>
-                {
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InstId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Evaluating")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("InstructorId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CourseId", "InstId");
-
-                    b.HasIndex("InstructorId");
-
-                    b.ToTable("Course_Insts");
                 });
 
             modelBuilder.Entity("ItiProject.Data.Models.Department", b =>
@@ -86,17 +63,11 @@ namespace ItiProject.Data.Migrations
                     b.Property<DateTime>("HiringDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("InstId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("InstId")
-                        .IsUnique();
 
                     b.ToTable("Departments");
                 });
@@ -117,9 +88,6 @@ namespace ItiProject.Data.Migrations
                     b.Property<decimal>("Bonus")
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<int?>("DepartmentId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("HourRate")
                         .HasColumnType("decimal(10,2)");
 
@@ -132,8 +100,6 @@ namespace ItiProject.Data.Migrations
                         .HasColumnType("decimal(10,2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Instructors");
                 });
@@ -175,24 +141,6 @@ namespace ItiProject.Data.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("ItiProject.Data.Models.StudentCourse", b =>
-                {
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Grade")
-                        .HasColumnType("int");
-
-                    b.HasKey("StudentId", "CourseId");
-
-                    b.HasIndex("CourseId");
-
-                    b.ToTable("StudentCourses");
-                });
-
             modelBuilder.Entity("ItiProject.Data.Models.Topic", b =>
                 {
                     b.Property<int>("Id")
@@ -210,50 +158,6 @@ namespace ItiProject.Data.Migrations
                     b.ToTable("Topic");
                 });
 
-            modelBuilder.Entity("ItiProject.Data.Models.Course", b =>
-                {
-                    b.HasOne("ItiProject.Data.Models.Topic", "Topic")
-                        .WithMany("Courses")
-                        .HasForeignKey("TopicId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Topic");
-                });
-
-            modelBuilder.Entity("ItiProject.Data.Models.Course_Inst", b =>
-                {
-                    b.HasOne("ItiProject.Data.Models.Course", null)
-                        .WithMany("Course_Insts")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ItiProject.Data.Models.Instructor", null)
-                        .WithMany("Course_Insts")
-                        .HasForeignKey("InstructorId");
-                });
-
-            modelBuilder.Entity("ItiProject.Data.Models.Department", b =>
-                {
-                    b.HasOne("ItiProject.Data.Models.Instructor", "Instructor")
-                        .WithOne()
-                        .HasForeignKey("ItiProject.Data.Models.Department", "InstId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Instructor");
-                });
-
-            modelBuilder.Entity("ItiProject.Data.Models.Instructor", b =>
-                {
-                    b.HasOne("ItiProject.Data.Models.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId");
-
-                    b.Navigation("Department");
-                });
-
             modelBuilder.Entity("ItiProject.Data.Models.Student", b =>
                 {
                     b.HasOne("ItiProject.Data.Models.Department", "Department")
@@ -265,46 +169,9 @@ namespace ItiProject.Data.Migrations
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("ItiProject.Data.Models.StudentCourse", b =>
-                {
-                    b.HasOne("ItiProject.Data.Models.Course", null)
-                        .WithMany("StudentCourses")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ItiProject.Data.Models.Student", null)
-                        .WithMany("StudentCourses")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ItiProject.Data.Models.Course", b =>
-                {
-                    b.Navigation("Course_Insts");
-
-                    b.Navigation("StudentCourses");
-                });
-
             modelBuilder.Entity("ItiProject.Data.Models.Department", b =>
                 {
                     b.Navigation("Students");
-                });
-
-            modelBuilder.Entity("ItiProject.Data.Models.Instructor", b =>
-                {
-                    b.Navigation("Course_Insts");
-                });
-
-            modelBuilder.Entity("ItiProject.Data.Models.Student", b =>
-                {
-                    b.Navigation("StudentCourses");
-                });
-
-            modelBuilder.Entity("ItiProject.Data.Models.Topic", b =>
-                {
-                    b.Navigation("Courses");
                 });
 #pragma warning restore 612, 618
         }

@@ -4,6 +4,7 @@ using ItiProject.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ItiProject.Data.Migrations
 {
     [DbContext(typeof(ItiDbContex))]
-    partial class ItiDbContexModelSnapshot : ModelSnapshot
+    [Migration("20250911131704_TopCourseRelation")]
+    partial class TopCourseRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,27 +55,6 @@ namespace ItiProject.Data.Migrations
                     b.HasIndex("TopicId");
 
                     b.ToTable("Courses");
-                });
-
-            modelBuilder.Entity("ItiProject.Data.Models.Course_Inst", b =>
-                {
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InstId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Evaluating")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("InstructorId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CourseId", "InstId");
-
-                    b.HasIndex("InstructorId");
-
-                    b.ToTable("Course_Insts");
                 });
 
             modelBuilder.Entity("ItiProject.Data.Models.Department", b =>
@@ -175,24 +157,6 @@ namespace ItiProject.Data.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("ItiProject.Data.Models.StudentCourse", b =>
-                {
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Grade")
-                        .HasColumnType("int");
-
-                    b.HasKey("StudentId", "CourseId");
-
-                    b.HasIndex("CourseId");
-
-                    b.ToTable("StudentCourses");
-                });
-
             modelBuilder.Entity("ItiProject.Data.Models.Topic", b =>
                 {
                     b.Property<int>("Id")
@@ -219,19 +183,6 @@ namespace ItiProject.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Topic");
-                });
-
-            modelBuilder.Entity("ItiProject.Data.Models.Course_Inst", b =>
-                {
-                    b.HasOne("ItiProject.Data.Models.Course", null)
-                        .WithMany("Course_Insts")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ItiProject.Data.Models.Instructor", null)
-                        .WithMany("Course_Insts")
-                        .HasForeignKey("InstructorId");
                 });
 
             modelBuilder.Entity("ItiProject.Data.Models.Department", b =>
@@ -265,41 +216,9 @@ namespace ItiProject.Data.Migrations
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("ItiProject.Data.Models.StudentCourse", b =>
-                {
-                    b.HasOne("ItiProject.Data.Models.Course", null)
-                        .WithMany("StudentCourses")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ItiProject.Data.Models.Student", null)
-                        .WithMany("StudentCourses")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ItiProject.Data.Models.Course", b =>
-                {
-                    b.Navigation("Course_Insts");
-
-                    b.Navigation("StudentCourses");
-                });
-
             modelBuilder.Entity("ItiProject.Data.Models.Department", b =>
                 {
                     b.Navigation("Students");
-                });
-
-            modelBuilder.Entity("ItiProject.Data.Models.Instructor", b =>
-                {
-                    b.Navigation("Course_Insts");
-                });
-
-            modelBuilder.Entity("ItiProject.Data.Models.Student", b =>
-                {
-                    b.Navigation("StudentCourses");
                 });
 
             modelBuilder.Entity("ItiProject.Data.Models.Topic", b =>
