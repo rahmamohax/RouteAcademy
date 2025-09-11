@@ -4,6 +4,7 @@ using EFCore01.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFCore01.Data.Migrations
 {
     [DbContext(typeof(CompanyDbContext))]
-    partial class CompanyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250911113657_Updates")]
+    partial class Updates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,12 +33,12 @@ namespace EFCore01.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ManagerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
+                    b.Property<string>("DeptName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ManagerId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -61,7 +64,7 @@ namespace EFCore01.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValue(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
-                    b.Property<string>("EmailAddress")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -76,6 +79,7 @@ namespace EFCore01.Data.Migrations
                         .HasColumnType("money");
 
                     b.Property<int?>("WorkDepartmentId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -83,58 +87,6 @@ namespace EFCore01.Data.Migrations
                     b.HasIndex("WorkDepartmentId");
 
                     b.ToTable("Employees");
-                });
-
-            modelBuilder.Entity("EFCore01.Data.Entities.M2M.Course", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Courses");
-                });
-
-            modelBuilder.Entity("EFCore01.Data.Entities.M2M.Student", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Students");
-                });
-
-            modelBuilder.Entity("EFCore01.Data.Entities.M2M.StudentCource", b =>
-                {
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Grade")
-                        .HasColumnType("int");
-
-                    b.HasKey("CourseId", "StudentId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("StudentsCources");
                 });
 
             modelBuilder.Entity("EFCore01.Data.Entities.Department", b =>
@@ -152,9 +104,10 @@ namespace EFCore01.Data.Migrations
                     b.HasOne("EFCore01.Data.Entities.Department", "WorkDepartment")
                         .WithMany("Employees")
                         .HasForeignKey("WorkDepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.OwnsOne("EFCore01.Data.Entities.Address", "EmpAddress", b1 =>
+                    b.OwnsOne("EFCore01.Data.Entities.Address", "Address", b1 =>
                         {
                             b1.Property<int>("EmployeeId")
                                 .HasColumnType("int");
@@ -179,24 +132,10 @@ namespace EFCore01.Data.Migrations
                                 .HasForeignKey("EmployeeId");
                         });
 
-                    b.Navigation("EmpAddress");
+                    b.Navigation("Address")
+                        .IsRequired();
 
                     b.Navigation("WorkDepartment");
-                });
-
-            modelBuilder.Entity("EFCore01.Data.Entities.M2M.StudentCource", b =>
-                {
-                    b.HasOne("EFCore01.Data.Entities.M2M.Course", null)
-                        .WithMany("StudentsCources")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EFCore01.Data.Entities.M2M.Student", null)
-                        .WithMany("StudentsCources")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("EFCore01.Data.Entities.Department", b =>
@@ -207,16 +146,6 @@ namespace EFCore01.Data.Migrations
             modelBuilder.Entity("EFCore01.Data.Entities.Employee", b =>
                 {
                     b.Navigation("ManagesDepartment");
-                });
-
-            modelBuilder.Entity("EFCore01.Data.Entities.M2M.Course", b =>
-                {
-                    b.Navigation("StudentsCources");
-                });
-
-            modelBuilder.Entity("EFCore01.Data.Entities.M2M.Student", b =>
-                {
-                    b.Navigation("StudentsCources");
                 });
 #pragma warning restore 612, 618
         }

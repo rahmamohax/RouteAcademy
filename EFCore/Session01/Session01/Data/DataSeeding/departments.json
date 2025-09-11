@@ -1,0 +1,26 @@
+[
+  {
+    "Name": "Sales",
+    "ManagerId": 6
+  },
+  {
+    "Name": "Media",
+    "ManagerId": 2
+
+  },
+  {
+    "Name": "Markting",
+    "ManagerId": 3
+
+  },
+  {
+    "Name": "HR",
+    "ManagerId": 4
+
+  },
+  {
+    "Name": "PR",
+    "ManagerId": 5
+
+  }
+]

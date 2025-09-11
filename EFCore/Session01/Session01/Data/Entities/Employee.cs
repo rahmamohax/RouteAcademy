@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EFCore01.Entities
+namespace EFCore01.Data.Entities
 {
 
     //4 Ways for Mapping: [Table, View, Function]
@@ -64,12 +64,27 @@ namespace EFCore01.Entities
     //3. Fluent APIs
     public class Employee
     {
-        public int EmpId { get; set; }  
-        public string Name { get; set; }
+        public int Id { get; set; }  
+        public required string Name { get; set; }
         public int? Age { get; set; }
         public decimal Salary { get; set; }
 
-        public string Email { get; set; }
+        public required string EmailAddress { get; set; }
         public DateTime DateOfCreation { get; set; }
+        public Address? EmpAddress { get; set; }
+
+        #region 1 to many Relation
+
+        [ForeignKey(nameof(WorkDepartment))]
+        public int? WorkDepartmentId { get; set; }  //making one fk optional to avoid cyclic cascade
+        public Department? WorkDepartment { get; set; }
+        #endregion
+
+
+        #region 1 to 1 Relation
+        public Department? ManagesDepartment { get; set; }
+        #endregion
+
+
     }
 }

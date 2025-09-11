@@ -1,4 +1,4 @@
-﻿using EFCore01.Entities;
+﻿using EFCore01.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -13,7 +13,7 @@ namespace EFCore01.Configuration
     {
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
-            builder.HasKey(e => e.EmpId);
+            builder.HasKey(e => e.Id);
             //builder.HasKey(e => new {e.EmpId, e.Name});  // Composite PK
 
             builder.Property(e => e.Name).IsRequired()
@@ -24,8 +24,10 @@ namespace EFCore01.Configuration
 
             builder.Property(e => e.Salary).HasColumnType("money");
 
-            builder.Property(e => e.DateOfCreation).HasDefaultValue(DateTime.Now);
+            builder.Property(e => e.DateOfCreation).HasDefaultValue(new DateTime(2025, 1, 1));
             //builder.Property(e => e.DateOfCreation).HasDefaultValueSql("GETDATE()");
+
+            builder.OwnsOne(e => e.EmpAddress, Address => Address.WithOwner());
         }
     }
 }
