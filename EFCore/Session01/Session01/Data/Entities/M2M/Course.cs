@@ -12,7 +12,7 @@ namespace EFCore01.Data.Entities.M2M
         public required string Name { get; set; }
 
         //public List<Student> Students { get; set; }
-        public List<StudentCource> StudentsCources { get; set; } 
+        public virtual List<StudentCource> StudentsCources { get; set; } 
 
     }
 }

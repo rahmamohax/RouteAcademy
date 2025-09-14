@@ -82,6 +82,7 @@ namespace EFCore01.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder.UseLazyLoadingProxies(true);
             optionsBuilder.UseSqlServer("Server=RAHMA\\SQLEXPRESS;Database=Company;Trusted_Connection=True;TrustServerCertificate=True");
 
 

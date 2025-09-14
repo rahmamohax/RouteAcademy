@@ -12,7 +12,7 @@ namespace EFCore01.Data.Entities.M2M
         public string Name { get; set; } = null!;
 
         //public List<Course> Courses { get; set; }
-        public List<StudentCource> StudentsCources { get; set; } = null!;
+        public virtual List<StudentCource> StudentsCources { get; set; } = null!;
 
     }
 }

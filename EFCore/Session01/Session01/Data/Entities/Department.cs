@@ -13,14 +13,14 @@ namespace EFCore01.Data.Entities
         public  string Name { get; set; }
 
         #region 1 to many Relation
-        public  List<Employee> Employees { get; set; }
+        public virtual List<Employee> Employees { get; set; }
         #endregion
 
         #region 1 to 1 Relation
 
         [ForeignKey(nameof(Manager))]
         public int ManagerId { get; set; } 
-        public  Employee Manager { get; set; } //navigationla property 
+        public virtual Employee Manager { get; set; } //navigationla property 
         #endregion
     }
 }

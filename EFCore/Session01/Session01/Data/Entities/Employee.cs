@@ -77,12 +77,12 @@ namespace EFCore01.Data.Entities
 
         [ForeignKey(nameof(WorkDepartment))]
         public int? WorkDepartmentId { get; set; }  //making one fk optional to avoid cyclic cascade
-        public Department? WorkDepartment { get; set; }
+        public virtual Department? WorkDepartment { get; set; }
         #endregion
 
 
         #region 1 to 1 Relation
-        public Department? ManagesDepartment { get; set; }
+        public virtual Department? ManagesDepartment { get; set; }
         #endregion
 
 
