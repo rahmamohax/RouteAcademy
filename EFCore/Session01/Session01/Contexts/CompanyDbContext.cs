@@ -1,6 +1,7 @@
 ﻿using EFCore01.Configuration;
 using EFCore01.Data.Entities;
 using EFCore01.Data.Entities.M2M;
+using EFCore01.Data.Entities.Views;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace EFCore01.Contexts
 
         public DbSet<Course> Courses { get; set; }
         public DbSet<StudentCource> StudentsCources { get; set; }
+        public DbSet<DepartmentsAndEmps> DepartmentsAndEmps { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -74,8 +76,9 @@ namespace EFCore01.Contexts
                             .OnDelete(DeleteBehavior.NoAction);
             #endregion
 
-            modelBuilder.Entity<StudentCource>().HasKey(x => new { x.CourseId, x.StudentId })
-                ;
+            modelBuilder.Entity<StudentCource>().HasKey(x => new { x.CourseId, x.StudentId });
+
+            modelBuilder.Entity<DepartmentsAndEmps>().HasNoKey().ToView("DepartmentsAndEmps");
 
             base.OnModelCreating(modelBuilder);
         }

@@ -233,6 +233,10 @@ namespace EFCore01
             #endregion
             #endregion
 
+            var items =context.DepartmentsAndEmps.ToList();
+            foreach (var item in items)
+                Console.WriteLine($"{item.DepartmentName} : {item.EmployeeName} ");
+
         }
     }
 }
