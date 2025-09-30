@@ -1,0 +1,30 @@
+[
+  {
+    "Title": "Romance",
+    "Description": "Books about love and relationships."
+  },
+  {
+    "Title": "History",
+    "Description": "Books covering historical events and figures."
+  },
+  {
+    "Title": "Travel",
+    "Description": "Books about journeys, places, and cultures."
+  },
+  {
+    "Title": "Cooking",
+    "Description": "Recipe books and culinary guides."
+  },
+  {
+    "Title": "Health & Fitness",
+    "Description": "Books on wellness, exercise, and healthy living."
+  },
+  {
+    "Title": "Art",
+    "Description": "Books exploring visual arts, design, and creativity."
+  },
+  {
+    "Title": "Programming",
+    "Description": "Books about coding, software development, and computer science."
+  }
+]
