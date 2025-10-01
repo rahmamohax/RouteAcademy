@@ -16,6 +16,7 @@ namespace LibraryManSys.Contexts
         public DbSet<Fine> Fines { get; set; }
         public DbSet<Loan> Loans { get; set; }
         public DbSet<Member> Members { get; set; }
+        public DbSet<MemberLoans> MemberLoans { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
