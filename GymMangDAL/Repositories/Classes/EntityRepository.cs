@@ -1,6 +1,7 @@
 ﻿using GymMangDAL.Data.Contexts;
 using GymMangDAL.Entities;
 using GymMangDAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace GymMangDAL.Repositories.Classes
 {
-    public class EntityRepository<TEntity> : IEntityRepository<TEntity> where TEntity : class
+    public class EntityRepository<TEntity> : Interfaces.IEntityRepository<TEntity> where TEntity : BaseEntity, new()
     {
         private readonly GymDbContext _dbContext;
 
@@ -18,29 +19,21 @@ namespace GymMangDAL.Repositories.Classes
         {
             _dbContext = dbContext;
         }
-        public int Add(TEntity entity)
+        public void Add(TEntity entity) => _dbContext.Set<TEntity>().Add(entity);
+
+        public void Delete(TEntity entity) => _dbContext.Set<TEntity>().Remove(entity);
+
+        public IEnumerable<TEntity> GetAll(Func<TEntity, bool>? condition = null)
         {
-            _dbContext.Add(entity);
-            return _dbContext.SaveChanges();
+            if (condition is null) 
+                return _dbContext.Set<TEntity>().AsNoTracking().ToList();
+            else
+                return _dbContext.Set<TEntity>().AsNoTracking().Where(condition).ToList();
+
         }
-
-        public int Delete(int Id)
-        {
-            var TEntity = _dbContext.Set<TEntity>().Find(Id);
-            if (TEntity is null) return 0;
-
-            _dbContext.Set<TEntity>().Remove(TEntity);
-            return _dbContext.SaveChanges();
-        }
-
-        public IEnumerable<TEntity> GetAll() => _dbContext.Set<TEntity>().ToList();
 
         public TEntity? GetById(int id) => _dbContext.Set<TEntity>().Find(id);
 
-        public int Update(TEntity entity)
-        {
-            _dbContext.Set<TEntity>().Update(entity);
-            return _dbContext.SaveChanges();
-        }
+        public void Update(TEntity entity) => _dbContext.Set<TEntity>().Update(entity);
     }
 }

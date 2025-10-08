@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace GymMangDAL.Repositories.Interfaces
 {
-    public interface IPlanRepository : IEntityRepository<Plan>
+    public interface IPlanRepository 
     {
+        Plan? GetById(int id);
+        IEnumerable<Plan> GetAll();
+        int Update(Plan entity);
     }
 }
