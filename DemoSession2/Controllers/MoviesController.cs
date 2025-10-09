@@ -5,7 +5,6 @@ namespace DemoSession2.Controllers
 {
     public class MoviesController : Controller
     {
-
         public string Index()
         {
             return $"Hello From Index";

@@ -13,8 +13,7 @@ namespace DemoSession2
 
             #endregion
 
-
-            var app = builder.Build();
+            var app = builder.Build(); 
 
             #region MapGet
 
@@ -45,6 +44,7 @@ namespace DemoSession2
               pattern: "{Controller=Home}/{Action=Index}/{id?}"
 
               );
+
 
             app.Run();
         }
