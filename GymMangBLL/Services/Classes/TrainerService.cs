@@ -151,10 +151,10 @@ namespace GymMangBLL.Services.Classes
                 repo.Delete(trainer);
                 return _unitOfWork.SaveChanges() > 0;
             }
-            catch (Exception)
+            catch
             {
-
                 return false;
+                
             }
         }
     }
