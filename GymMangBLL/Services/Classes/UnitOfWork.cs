@@ -11,9 +11,12 @@ namespace GymMangBLL.Services.Classes
         private readonly Dictionary<Type, object> _repositories = new Dictionary<Type, object>();
         private readonly GymDbContext _dbContext;
 
-        public UnitOfWork(GymDbContext dbContext)
+        public ISessionRepository SessionRepository { get; }
+
+        public UnitOfWork(GymDbContext dbContext, ISessionRepository sessionRepository)
         {
             _dbContext = dbContext;
+            SessionRepository = sessionRepository;
         }
 
         public IEntityRepository<TEntity> GetRepository<TEntity>() where TEntity : BaseEntity, new()

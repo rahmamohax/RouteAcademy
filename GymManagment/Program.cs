@@ -1,6 +1,8 @@
+using GymMangBLL;
 using GymMangBLL.Services.Classes;
 using GymMangBLL.Services.Interfaces;
 using GymMangDAL.Data.Contexts;
+using GymMangDAL.Data.DataSeed;
 using GymMangDAL.Repositories.Classes;
 using GymMangDAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -19,12 +21,25 @@ namespace GymManagment
                 //options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings")["DefaultConnection"]);
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-
             //builder.Services.AddScoped(typeof(IEntityRepository<>), typeof(EntityRepository<>));
             //builder.Services.AddScoped(typeof(IPlanRepository), typeof(PlanRepository));
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+            builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+            builder.Services.AddAutoMapper(x => x.AddProfile(new Mappingprofiles()));
 
             var app = builder.Build();
+
+            #region Seeding Data
+            using var scope = app.Services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<GymDbContext>();
+
+            var pendingMigrations = dbContext.Database.GetPendingMigrations(); //Get Only Pending migrations
+            if (pendingMigrations?.Any() ?? false)
+                dbContext.Database.Migrate();
+
+            GymDbContectSeeding.DataSeed(dbContext);
+            #endregion
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -42,8 +57,14 @@ namespace GymManagment
             app.UseAuthorization();
 
             app.MapControllerRoute(
+                name: "Trainer",
+                pattern: "coach/{action}",
+                defaults: new {controller = "trainer" }
+                );
+
+            app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id:int?}");
 
             app.Run();
         }

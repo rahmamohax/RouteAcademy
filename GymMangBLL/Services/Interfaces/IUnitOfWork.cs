@@ -10,6 +10,8 @@ namespace GymMangBLL.Services.Interfaces
 {
     public interface IUnitOfWork
     {
+        public ISessionRepository SessionRepository { get; }
+
         //Applying The Single Atomic Transaction (Either all work or none)
         IEntityRepository<TEntity> GetRepository<TEntity>() where TEntity : BaseEntity, new();
         int SaveChanges();

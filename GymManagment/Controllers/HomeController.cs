@@ -1,32 +1,55 @@
-using System.Diagnostics;
-using GymManagment.Models;
+﻿using GymMangBLL.Services.Interfaces;
+using GymMangDAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymManagment.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IAnalyticsService _analyticsService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IAnalyticsService analyticsService)
         {
-            _logger = logger;
+            _analyticsService = analyticsService;
         }
 
-        public IActionResult Index()
+        //Url/Controller/Action
+        //BaseUrl/Home/Index
+        //[NonAction] //method will not be invoked
+        public ViewResult Index()
         {
-            return View();
+            var data = _analyticsService.GetAnalytics();
+            return View(data);
+        }
+        public JsonResult Trainers()
+        {
+            var trainers= new List<Trainer>()
+            {
+                new Trainer(){Name = "Ali", Phone="123456"},
+                new Trainer(){Name= "Amr", Phone="0123494"}
+            };
+            return Json(trainers);
+        }
+        public RedirectResult Redirect()
+        {
+            return Redirect("https://github.com/AliaaAbdelhamid");
         }
 
-        public IActionResult Privacy()
+        public ContentResult Content()
         {
-            return View();
+            return Content("Hello world");
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public FileResult DownloadFile()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/css/site.css");
+            var data = System.IO.File.ReadAllBytes(path);
+            return File(data, "text/css", "NewFile");
+        }
+
+        public EmptyResult EmptyResult()
+        {
+            return new EmptyResult();
         }
     }
 }
