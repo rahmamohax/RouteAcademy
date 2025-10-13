@@ -1,4 +1,8 @@
+using CompanyProjectBLL.Services.Classes;
+using CompanyProjectBLL.Services.Interfaces;
 using CompanyProjectDAL.Data.Contects;
+using CompanyProjectDAL.Repositories.Classes;
+using CompanyProjectDAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace CompanyProjectPL
@@ -15,6 +19,8 @@ namespace CompanyProjectPL
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
             var app = builder.Build();
 

@@ -10,8 +10,8 @@ namespace CompanyProjectDAL.Repositories.Interfaces
     {
         Department? GetById(int id);
         IEnumerable<Department> GetAll(Func<Department, bool>? condition = null);
-        void Add(Department entity);
-        void Update(Department entity);
-        void Delete(Department entity);
+        bool Add(Department entity);
+        bool Update(Department entity);
+        bool Delete(Department entity);
     }
 }

@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace CompanyProjectDAL.Data.Contects
 {
-    public class CompanyDbContext(DbContextOptions options) : DbContext(options)
+    public class CompanyDbContext(DbContextOptions<CompanyDbContext> options) : DbContext(options)
     {
         public DbSet<Department> Departments { get; set; }
 
