@@ -32,7 +32,7 @@ namespace GymMangDAL.Data.Configurations
             {
                 AddressBld.Property(a => a.Street).HasColumnName("Street").HasColumnType("varchar").HasMaxLength(30);
                 AddressBld.Property(a => a.City).HasColumnName("City").HasColumnType("varchar").HasMaxLength(30);
-                AddressBld.Property(a => a.BuldingNumber).HasColumnName("BuldingNumber");
+                AddressBld.Property(a => a.BuildingNumber).HasColumnName("BuldingNumber");
             });
         }
     }

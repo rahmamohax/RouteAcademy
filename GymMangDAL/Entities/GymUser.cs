@@ -24,7 +24,7 @@ namespace GymMangDAL.Entities
     [Owned]
     public class Address
     {
-        public int BuldingNumber { get; set; }
+        public int BuildingNumber { get; set; }
         public string Street { get; set; } = string.Empty;
         public string City { get; set; } = null!;
     }

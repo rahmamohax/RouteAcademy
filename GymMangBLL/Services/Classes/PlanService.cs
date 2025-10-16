@@ -1,4 +1,5 @@
-﻿using GymMangBLL.Services.Interfaces;
+﻿using AutoMapper;
+using GymMangBLL.Services.Interfaces;
 using GymMangBLL.ViewModels.PlanViewModels;
 using GymMangDAL.Entities;
 using System;
@@ -12,10 +13,12 @@ namespace GymMangBLL.Services.Classes
     internal class PlanService : IPlanService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public PlanService(IUnitOfWork unitOfWork)
+        public PlanService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         #region Helper
@@ -29,43 +32,21 @@ namespace GymMangBLL.Services.Classes
         {
             var plans = _unitOfWork.GetRepository<Plan>().GetAll();
             if (plans is null || !plans.Any()) return [];
-            return plans.Select(p => new PlanViewModel
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Description = p.Description,
-                DurationDays = p.DurationDays,
-                Price = p.Price,
-                IsActive = p.IsActive,
-            });
+            return _mapper.Map<IEnumerable<PlanViewModel>>(plans);
         }
 
         public PlanViewModel? GetPlanById(int id)
         {
             var plan = _unitOfWork.GetRepository<Plan>().GetById(id);
             if (plan is null) return null;
-            return new PlanViewModel
-            {
-                Id = plan.Id,
-                Name = plan.Name,
-                Description = plan.Description,
-                DurationDays = plan.DurationDays,
-                Price = plan.Price,
-                IsActive = plan.IsActive,
-            };
+            return _mapper.Map<PlanViewModel>(plan);
         }
 
         public UpdatePlanViewModel? GetUpdatePlan(int Id)
         {
             var plan = _unitOfWork.GetRepository<Plan>().GetById(Id);
             if (plan is null || plan.IsActive == false || hasActiveMembership(Id)) return null;  //Cant update plans with active membership
-            return new UpdatePlanViewModel
-            {
-                Name = plan.Name,
-                Description = plan.Description,
-                Duration = plan.DurationDays,
-                Price = plan.Price
-            };
+            return _mapper.Map<UpdatePlanViewModel>(plan);
         }
         public bool UpdatePlan(int Id, PlanViewModel planToUpdate)
         {
@@ -73,7 +54,7 @@ namespace GymMangBLL.Services.Classes
             if (plan is null) return false;
             try
             {
-                (plan.Description, plan.DurationDays, plan.Price, plan.UpdatedAt) = (planToUpdate.Description, planToUpdate.DurationDays, planToUpdate.Price, DateTime.Now);
+               _mapper.Map(planToUpdate, plan);
 
                 _unitOfWork.GetRepository<Plan>().Update(plan);
                 return _unitOfWork.SaveChanges() > 0;

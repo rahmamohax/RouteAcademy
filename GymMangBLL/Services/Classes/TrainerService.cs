@@ -1,4 +1,5 @@
-﻿using GymMangBLL.Services.Interfaces;
+﻿using AutoMapper;
+using GymMangBLL.Services.Interfaces;
 using GymMangBLL.ViewModels.TrainerViewModels;
 using GymMangDAL.Entities;
 using System;
@@ -14,10 +15,12 @@ namespace GymMangBLL.Services.Classes
     public class TrainerService : ITrainerService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public TrainerService(IUnitOfWork unitOfWork)
+        public TrainerService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         #region Helper
@@ -37,36 +40,15 @@ namespace GymMangBLL.Services.Classes
         {
             var trainers = _unitOfWork.GetRepository<Trainer>().GetAll() ?? [];
 
-            return trainers.Select(x => new TrainerViewModel()
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Email = x.Email,
-                Phone = x.Phone,
-                Specialization = x.Specialties.ToString(),
-            });
+            return _mapper.Map<IEnumerable<TrainerViewModel>>(trainers);
+                
         }
 
         public bool CreateTrainer(CreateTrainerViewModel createTrainer)
         {
             if (emailExists(createTrainer.Email) || phoneExists(createTrainer.Phone)) return false;
 
-            var trainer = new Trainer()
-            {
-                Name = createTrainer.Name,
-                Email = createTrainer.Email,
-                Phone = createTrainer.Phone,
-                Address = new Address
-                {
-                    BuldingNumber = createTrainer.BuildingNumber,
-                    City = createTrainer.City,
-                    Street = createTrainer.Street,
-                },
-                Gender = createTrainer.Gender,
-                Specialties = createTrainer.Specialty,
-                CreatedAt = createTrainer.HireDate,
-                DateOfBirth = createTrainer.DateofBirth               
-            };
+            var trainer = _mapper.Map<Trainer>(createTrainer);
 
             try
             {
@@ -85,15 +67,7 @@ namespace GymMangBLL.Services.Classes
             var trainer = _unitOfWork.GetRepository<Trainer>().GetById(id);
             if (trainer == null) return null;
 
-            return new TrainerViewModel
-            {
-                Name = trainer.Name,
-                Specialization = trainer.Specialties.ToString(),
-                Email = trainer.Email,
-                Phone = trainer.Phone,
-                DateOfBirth = trainer.DateOfBirth.ToShortDateString(),
-                Address = $"{trainer.Address.BuldingNumber}-{trainer.Address.Street}-{trainer.Address.City}"
-            };
+            return _mapper.Map<TrainerViewModel>(trainer);
         }
 
         public UpdateTrainerViewModel? TrainerToUpdate(int id)
@@ -101,15 +75,7 @@ namespace GymMangBLL.Services.Classes
             var trainer = _unitOfWork.GetRepository<Trainer>().GetById(id);
             if (trainer == null) return null;
 
-            return new UpdateTrainerViewModel
-            {
-                Email = trainer.Email,
-                Phone = trainer.Phone,
-                BuildingNumber = trainer.Address.BuldingNumber,
-                City = trainer.Address.City,
-                Street = trainer.Address.Street,
-                Specialty = trainer.Specialties
-            };
+            return _mapper.Map<UpdateTrainerViewModel>(trainer);
         }
 
         public bool UpdateTrainerDetails(int id, UpdateTrainerViewModel updateTrainerDetails)
@@ -118,13 +84,7 @@ namespace GymMangBLL.Services.Classes
             var trainer = repo.GetById(id);
             if (emailExists(updateTrainerDetails.Email) || phoneExists(updateTrainerDetails.Phone) || trainer is null) return false;
 
-            trainer.Email = updateTrainerDetails.Email;
-            trainer.Phone = updateTrainerDetails.Phone;
-            trainer.Address.BuldingNumber = updateTrainerDetails.BuildingNumber;
-            trainer.Address.City = updateTrainerDetails.City;
-            trainer.Address.Street = updateTrainerDetails.Street;
-            trainer.Specialties = updateTrainerDetails.Specialty;
-            trainer.UpdatedAt = DateTime.Now;
+            _mapper.Map(updateTrainerDetails, trainer);
 
             try
             {
@@ -133,7 +93,6 @@ namespace GymMangBLL.Services.Classes
             }
             catch (Exception)
             {
-
                 return false;
             }
         }
