@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
 using GymMangBLL.Services.Interfaces;
 using GymMangBLL.ViewModels.MemberViewModels;
-using GymMangBLL.ViewModels.MemberVIewModels;
 using GymMangDAL.Entities;
-using GymMangDAL.Repositories.Classes;
-using GymMangDAL.Repositories.Interfaces;
 
 namespace GymMangBLL.Services.Classes
 {
@@ -55,7 +52,7 @@ namespace GymMangBLL.Services.Classes
 
             var memberView = _mapper.Map<MemberViewModel>(member);
 
-            var membership = _unitOfWork.GetRepository<MemberShip>().GetAll(x => x.Id == Id && x.Status == "Active")
+            var membership = _unitOfWork.GetRepository<MemberShip>().GetAll(x => x.MemberId == Id && x.Status == "Active")
                 .FirstOrDefault();
 
             if (membership is not null)
@@ -81,7 +78,13 @@ namespace GymMangBLL.Services.Classes
         {
             try
             {
-                if (isEmailExists(updateMember.Email) || isPhoneExists(updateMember.Phone)) return false;
+                
+                var emailExit = _unitOfWork.GetRepository<Member>().GetAll(x => x.Email == updateMember.Email && x.Id != Id).Any();
+                var phoneExit = _unitOfWork.GetRepository<Member>().GetAll(x => x.Phone == updateMember.Phone && x.Id != Id).Any();
+
+                //if (isEmailExists(updateMember.Email) || isPhoneExists(updateMember.Phone)) return false;
+
+                if (emailExit || phoneExit) return false;
 
                 var member = _unitOfWork.GetRepository<Member>().GetById(Id);
                 if (member is null) return false;
@@ -105,9 +108,13 @@ namespace GymMangBLL.Services.Classes
             var member = _unitOfWork.GetRepository<Member>().GetById(Id);
             if (member is null) return false;
 
-            var memberSession = _unitOfWork.GetRepository<MemberSession>()
-                .GetAll(x => x.MemberId == Id && x.Session.StartDate > DateTime.Now).Any();
-            if (memberSession) return false;  // Can't remove if session is active
+            var sessionIds = _unitOfWork.GetRepository<MemberSession>()
+                .GetAll(x => x.MemberId == Id).Select(x => x.SessionId);
+
+            var haveFutureSessions = _unitOfWork.GetRepository<Session>()
+                .GetAll(x => sessionIds.Contains(x.Id) && x.StartDate > DateTime.Now).Any();
+
+            if (haveFutureSessions) return false;  // Can't remove if session is active
 
             var memberships = _unitOfWork.GetRepository<MemberShip>().GetAll(x => x.MemberId == Id);
             try

@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using AutoMapper.Execution;
 using GymManagementSystemBLL.ViewModels.SessionViewModels;
 using GymMangBLL.ViewModels.MemberViewModels;
-using GymMangBLL.ViewModels.MemberVIewModels;
 using GymMangBLL.ViewModels.PlanViewModels;
 using GymMangBLL.ViewModels.SessionViewModels;
 using GymMangBLL.ViewModels.TrainerViewModels;

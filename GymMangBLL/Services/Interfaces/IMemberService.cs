@@ -1,5 +1,5 @@
 ﻿using GymMangBLL.ViewModels.MemberViewModels;
-using GymMangBLL.ViewModels.MemberVIewModels;
+using GymMangBLL.ViewModels.MemberViewModels;
 
 namespace GymMangBLL.Services.Interfaces
 {

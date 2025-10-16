@@ -13,7 +13,7 @@ namespace GymMangBLL.ViewModels.MemberViewModels
 
         [Required(ErrorMessage = "Name Field is Required")]
         [StringLength(50, MinimumLength = 3)]
-        [RegularExpression(@"^[a-zA-Z\s]+&", ErrorMessage = "Invalid Input")]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Invalid Input")]
         public string Name { get; set; } = null!;
 
         [Required(ErrorMessage = "Email is Required")]
@@ -38,7 +38,7 @@ namespace GymMangBLL.ViewModels.MemberViewModels
 
         [Required(ErrorMessage = "City is Required")]
         [StringLength(30, MinimumLength = 3)]
-        [RegularExpression(@"^[a-zA-Z\s]+&", ErrorMessage = "Invalid Input")]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Invalid Input")]
         public string City { get; set; } = null!;
     }
 }

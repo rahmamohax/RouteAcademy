@@ -18,15 +18,16 @@ namespace GymManagment
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<GymDbContext>(options =>
             {
-                //options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings")["DefaultConnection"]);
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-            //builder.Services.AddScoped(typeof(IEntityRepository<>), typeof(EntityRepository<>));
-            //builder.Services.AddScoped(typeof(IPlanRepository), typeof(PlanRepository));
+
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<ISessionRepository, SessionRepository>();
             builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+            builder.Services.AddScoped<IMemberService, MemberService>();
+
             builder.Services.AddAutoMapper(x => x.AddProfile(new Mappingprofiles()));
+
 
             var app = builder.Build();
 

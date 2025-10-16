@@ -1,12 +1,8 @@
 ﻿using GymMangDAL.Entities;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace GymMangBLL.ViewModels.MemberVIewModels
+
+namespace GymMangBLL.ViewModels.MemberViewModels
 {
     public class CreateMemberViewModel
     {
@@ -14,7 +10,7 @@ namespace GymMangBLL.ViewModels.MemberVIewModels
 
         [Required(ErrorMessage ="Name Field is Required")]
         [StringLength(50, MinimumLength = 3)]
-        [RegularExpression(@"^[a-zA-Z\s]+&", ErrorMessage = "Invalid Input")]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Invalid Input")]
         public string Name { get; set; } = null!;
 
         [Required(ErrorMessage = "Email is Required")]
@@ -46,7 +42,7 @@ namespace GymMangBLL.ViewModels.MemberVIewModels
 
         [Required(ErrorMessage = "City is Required")]
         [StringLength(30, MinimumLength = 3)]
-        [RegularExpression(@"^[a-zA-Z\s]+&", ErrorMessage = "Invalid Input")]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Invalid Input")]
         public string City { get; set; } = null!;
 
         [Required(ErrorMessage = "Health Record is Required")]
