@@ -82,7 +82,10 @@ namespace GymMangBLL.Services.Classes
         {
             var repo = _unitOfWork.GetRepository<Trainer>();
             var trainer = repo.GetById(id);
-            if (emailExists(updateTrainerDetails.Email) || phoneExists(updateTrainerDetails.Phone) || trainer is null) return false;
+
+            var emailExit = repo.GetAll(x => x.Email == updateTrainerDetails.Email && x.Id != id).Any();
+            var phoneExit = repo.GetAll(x => x.Phone == updateTrainerDetails.Phone && x.Id != id).Any();
+            if (emailExit|| phoneExit || trainer is null) return false;
 
             _mapper.Map(updateTrainerDetails, trainer);
 

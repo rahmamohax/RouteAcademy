@@ -25,6 +25,8 @@ namespace GymManagment
             builder.Services.AddScoped<ISessionRepository, SessionRepository>();
             builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
             builder.Services.AddScoped<IMemberService, MemberService>();
+            builder.Services.AddScoped<IPlanService, PlanService>();
+            builder.Services.AddScoped<ITrainerService, TrainerService>();
 
             builder.Services.AddAutoMapper(x => x.AddProfile(new Mappingprofiles()));
 
@@ -56,12 +58,6 @@ namespace GymManagment
             app.UseRouting();
 
             app.UseAuthorization();
-
-            app.MapControllerRoute(
-                name: "Trainer",
-                pattern: "coach/{action}",
-                defaults: new {controller = "trainer" }
-                );
 
             app.MapControllerRoute(
                 name: "default",

@@ -76,15 +76,18 @@ namespace GymMangBLL
                 }));
 
             CreateMap<Trainer, TrainerViewModel>()
+                .ForMember(dist => dist.Specialization, opt => opt.MapFrom(src => src.Specialties.ToString()))
                 .ForMember(d => d.Address, opt => opt.MapFrom(s => $"{s.Address.BuildingNumber}-{s.Address.Street}-{s.Address.City}")); ;
 
             CreateMap<Trainer, UpdateTrainerViewModel>()
+                .ForMember(dist => dist.Specialty, opt => opt.MapFrom(src => src.Specialties))
                 .ForMember(dist => dist.Street, opt => opt.MapFrom(src => src.Address.Street))
                 .ForMember(dist => dist.City, opt => opt.MapFrom(src => src.Address.City))
                 .ForMember(dist => dist.BuildingNumber, opt => opt.MapFrom(src => src.Address.BuildingNumber));
 
             CreateMap<UpdateTrainerViewModel, Trainer>()
             .ForMember(dest => dest.Name, opt => opt.Ignore())
+            .ForMember(dist => dist.Specialties, opt => opt.MapFrom(src => src.Specialty))
             .AfterMap((src, dest) =>
             {
                 dest.Address.BuildingNumber = src.BuildingNumber;
@@ -96,11 +99,13 @@ namespace GymMangBLL
         private void MapPlan()
         {
             CreateMap<Plan, PlanViewModel>();
-            CreateMap<Plan, UpdatePlanViewModel>();
-            CreateMap<UpdatePlanViewModel, Plan>()
-           .ForMember(dest => dest.Name, opt => opt.Ignore())
-           .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.Now));
+            CreateMap<Plan, UpdatePlanViewModel>()
+                .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.DurationDays));
 
+            CreateMap<UpdatePlanViewModel, Plan>()
+                .ForMember(dest => dest.DurationDays, opt => opt.MapFrom(src => src.Duration))
+                .ForMember(dest => dest.Name, opt => opt.Ignore())
+                .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.Now));
         }
 
     }

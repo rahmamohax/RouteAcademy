@@ -32,7 +32,7 @@ namespace GymMangBLL.ViewModels.TrainerViewModels
 
         [Required(ErrorMessage = "City is Required")]
         [StringLength(30, MinimumLength = 3)]
-        [RegularExpression(@"^[a-zA-Z\s]+&", ErrorMessage = "Invalid Input")]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Invalid Input")]
         public string City { get; set; } = null!;
 
         [Required]

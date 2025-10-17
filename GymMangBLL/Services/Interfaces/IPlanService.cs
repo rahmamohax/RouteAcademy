@@ -12,7 +12,7 @@ namespace GymMangBLL.Services.Interfaces
         IEnumerable<PlanViewModel> GetAllPlans();
         PlanViewModel? GetPlanById(int id);
         UpdatePlanViewModel? GetUpdatePlan(int Id);
-        bool UpdatePlan(int Id,PlanViewModel planToUpdate);
+        bool UpdatePlan(int Id,UpdatePlanViewModel planToUpdate);
         bool ToggleStatus(int Id);
     }
 }

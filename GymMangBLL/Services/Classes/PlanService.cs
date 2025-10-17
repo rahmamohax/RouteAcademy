@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace GymMangBLL.Services.Classes
 {
-    internal class PlanService : IPlanService
+    public class PlanService : IPlanService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -48,7 +48,7 @@ namespace GymMangBLL.Services.Classes
             if (plan is null || plan.IsActive == false || hasActiveMembership(Id)) return null;  //Cant update plans with active membership
             return _mapper.Map<UpdatePlanViewModel>(plan);
         }
-        public bool UpdatePlan(int Id, PlanViewModel planToUpdate)
+        public bool UpdatePlan(int Id, UpdatePlanViewModel planToUpdate)
         {
             var plan = _unitOfWork.GetRepository<Plan>().GetById(Id);
             if (plan is null) return false;
