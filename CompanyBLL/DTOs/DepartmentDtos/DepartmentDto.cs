@@ -1,10 +1,4 @@
-﻿using CompanyProjectDAL.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace CompanyProjectBLL.DTOs.DepartmentDtos
 {
     public class DepartmentDto
@@ -29,6 +23,7 @@ namespace CompanyProjectBLL.DTOs.DepartmentDtos
         //Display
         public int? CreatedBy { get; set; }
         public int? LastModifiedBy { get; set; }
+        public string? LastModifiedOn { get; set; }
         public bool? IsDeleted { get; set; }
     }
 }

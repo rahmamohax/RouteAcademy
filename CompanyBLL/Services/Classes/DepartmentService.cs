@@ -30,17 +30,31 @@ namespace CompanyProjectBLL.Services.Classes
             return department.ToDepartmentDetailedDto();
         }
 
-        public bool AddDepartment(int id, UpdateDepartmentDto departmentDto)
-        {
-            var department = _departmentRepository.GetById(id); 
-            if (department is null) return false;
-            return _departmentRepository.Update(departmentDto.UpdateDepartment());
-        }
         public bool DeleteDepartment(int id)
         {
             var department = _departmentRepository.GetById(id);
             if (department is null) return false;
             return _departmentRepository.Delete(department);
+        }
+
+        public bool AddDepartment(CreateDepartmentDto departmentDto)
+        {
+            return _departmentRepository.Add(departmentDto.AddDepartment());
+        }
+
+        public bool UpdateDepartment(int id, UpdateDepartmentDto departmentDto)
+        {
+            var department = _departmentRepository.GetById(id);
+            if (department is null) return false;
+
+            //return _departmentRepository.Update(departmentDto.UpdateDepartment());
+            // Update the existing tracked entity instead of creating a new one
+            department.Name = departmentDto.Name;
+            department.Description = departmentDto.Description;
+            department.Code = departmentDto.Code;
+            department.LastModifiedOn = DateTime.Now;
+
+            return _departmentRepository.Update(department);
         }
     }
 }

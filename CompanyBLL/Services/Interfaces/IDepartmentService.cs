@@ -11,7 +11,8 @@ namespace CompanyProjectBLL.Services.Interfaces
     {
         public IEnumerable<DepartmentDto> GetAllDepartments();
         public DepartmentDto? GetDepartmentDetails(int id);
-        public bool AddDepartment(int id, UpdateDepartmentDto departmentDto);
+        public bool AddDepartment(CreateDepartmentDto departmentDto);
+        public bool UpdateDepartment(int id, UpdateDepartmentDto departmentDto);
         public bool DeleteDepartment(int id);
 
     }
