@@ -25,5 +25,7 @@ namespace CompanyProjectBLL.DTOs.EmployeeDtos
         public string? CreatedOn { get; set; }
         public int? LastModifiedBy { get; set; }
         public string? LastModifiedOn { get; set; }
+        public int? DepartmentId { get; set; }
+        public string? Department { get; set; }
     }
 }

@@ -3,11 +3,13 @@ using CompanyProjectBLL.DTOs.DepartmentDtos;
 using CompanyProjectBLL.DTOs.EmployeeDtos;
 using CompanyProjectBLL.Services.Classes;
 using CompanyProjectBLL.Services.Interfaces;
+using CompanyProjectDAL.Models;
+using CompanyProjectPL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyProjectPL.Controllers
 {
-    public class EmployeeController(IEmployeeService _employeeService, IMapper _mapper) : Controller
+    public class EmployeeController(IEmployeeService _employeeService) : Controller
     {
         public IActionResult Index()
         {
@@ -25,19 +27,34 @@ namespace CompanyProjectPL.Controllers
         }
 
         #region Create
-        public IActionResult Create()
+        public IActionResult Create(/*[FromServices] IDepartmentService _departmentService*/)
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(CreateEmployeeDto createEmployee)
+        public IActionResult Create(EmployeeViewModel createEmployee)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var res = _employeeService.AddEmployee(createEmployee);
+                    CreateEmployeeDto dto = new CreateEmployeeDto()
+                    {
+                        Name = createEmployee.Name,
+                        DepartmentId = createEmployee.DepartmentId,
+                        Address = createEmployee.Address,
+                        Age = createEmployee.Age,
+                        Email = createEmployee.Email,
+                        EmployeeType = createEmployee.EmployeeType,
+                        Gender = createEmployee.Gender,
+                        HiringDate = createEmployee.HiringDate,
+                        IsActive = createEmployee.IsActive,
+                        PhoneNumber = createEmployee.PhoneNumber,
+                        Salary = createEmployee.Salary
+                    };
+
+                    var res = _employeeService.AddEmployee(dto);
                     return (res) ? RedirectToAction(nameof(Index)) : View(createEmployee);
                 }
                 catch (Exception)
@@ -58,27 +75,51 @@ namespace CompanyProjectPL.Controllers
             var employee = _employeeService.GetEmployeeById(id.Value);
             if(employee is null) return NotFound();
 
-            var mappedEmp = _mapper.Map<UpdateEmployeeDto>(employee);
-            //var mappedEmp = new UpdateEmployeeDto()
-            //{
-            //    Id = employee.Id,
-            //    Email = employee.Email,
-            //    HiringDate = employee.HiringDate,
-            //};
+            //var mappedEmp = _mapper.Map<UpdateEmployeeDto>(employee);
+            var mappedEmp = new EmployeeViewModel()
+            {
+                Email = employee.Email,
+                Name = employee.Name,
+                Address = employee.Address,
+                Age = employee.Age,
+                DepartmentId = employee.DepartmentId,
+                EmployeeType = Enum.Parse<EmployeeType>(employee.EmployeeType),
+                Gender = Enum.Parse<Gender>(employee.Gender),
+                IsActive = employee.IsActive,
+                PhoneNumber = employee.PhoneNumber,
+                Salary = employee.Salary,
+                HiringDate =DateOnly.FromDateTime(employee.HiringDate.Value) 
+            };
             return View(mappedEmp);
         }
 
         [HttpPost]
-        public IActionResult Edit([FromRoute]int id, UpdateEmployeeDto updateEmployee)
+        public IActionResult Edit([FromRoute]int id, EmployeeViewModel model)
         {
             if (!ModelState.IsValid)
-                return View(updateEmployee);
+                return View(model);
 
-            var result = _employeeService.UpdateEmployee(id, updateEmployee);
+            UpdateEmployeeDto dto = new UpdateEmployeeDto()
+            {
+                Id = id,
+                Name = model.Name,
+                DepartmentId = model.DepartmentId,
+                Address = model.Address,
+                Age = model.Age,
+                Email = model.Email,
+                EmployeeType = model.EmployeeType,
+                Gender = model.Gender,
+                HiringDate = model.HiringDate,
+                IsActive = model.IsActive,
+                PhoneNumber = model.PhoneNumber,
+                Salary = model.Salary
+             };
+
+            var result = _employeeService.UpdateEmployee(id, dto);
 
             if (result)
                 return RedirectToAction(nameof(Index));
-            return View(updateEmployee);
+            return View(model);
         }
 
         #region Delete

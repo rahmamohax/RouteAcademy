@@ -10,6 +10,12 @@ namespace CompanyProjectPL.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            //ViewData["msg"] = "Hello from Index Controller";
+            //ViewBag.Msg = "Hello Using ViewBag";
+
+            ViewData["Dept1"] = new DepartmentDto() { Name = "TestViewData" };
+            ViewBag.Dept2 = new DepartmentDto() { Name = "TestViewBag" };
+
             var departments = _departmentService.GetAllDepartments();
             return View(departments);
         }
@@ -29,13 +35,16 @@ namespace CompanyProjectPL.Controllers
                 try
                 {
                     var res =_departmentService.AddDepartment(createDepartment);
-                    return (res) ? RedirectToAction(nameof(Index)) : View(createDepartment);
+                    if (res)
+                        TempData["SuccessMessage"] = "Department Created Successfully";
+                       
                 }
                 catch (Exception)
                 {
-
-                    throw;
+                    TempData["ErrorMessage"] = "Creation Has Failed";
                 }
+
+                return RedirectToAction(nameof(Index));
             }
             else return View(createDepartment);
         }

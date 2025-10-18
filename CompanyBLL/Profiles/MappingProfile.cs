@@ -21,7 +21,8 @@ namespace CompanyProjectBLL.Profiles
                 .ForMember(d => d.Gender, op => op.MapFrom(s => s.Gender.ToString()))
                 .ForMember(d => d.EmployeeType, op => op.MapFrom(s => s.EmployeeType.ToString()))
                 .ForMember(d => d.LastModifiedOn, op => op.MapFrom(s => s.LastModifiedOn.ToString()))
-                .ForMember(d => d.CreatedOn, op => op.MapFrom(s => s.CreatedOn.ToString()));
+                .ForMember(d => d.CreatedOn, op => op.MapFrom(s => s.CreatedOn.ToString()))
+                .ForMember(d => d.Department, op => op.MapFrom(s => s.Department != null ? s.Department.Name : null));
                 //.ForMember(d => d.HiringDate, op => op.MapFrom(s => s.HiringDate.ToString()));
 
             CreateMap<CreateEmployeeDto, Employee>()

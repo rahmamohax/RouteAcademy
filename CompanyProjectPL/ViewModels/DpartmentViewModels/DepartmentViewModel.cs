@@ -2,9 +2,8 @@
 
 namespace CompanyProjectPL.ViewModels.DpartmentViewModels
 {
-    public class UpdateDepartmentViewModel
+    public class DepartmentViewModel
     {
-        public int Id { get; set; }
         [MaxLength(10)]
         public string Name { get; set; } = string.Empty;
         public string Code { get; set; } = string.Empty;

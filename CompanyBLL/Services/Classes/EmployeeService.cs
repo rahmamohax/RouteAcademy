@@ -53,6 +53,7 @@ namespace CompanyProjectBLL.Services.Classes
             existingEmployee.Gender = employeeDto.Gender;
             existingEmployee.EmployeeType = employeeDto.EmployeeType;
             existingEmployee.LastModifiedOn = DateTime.Now;
+            existingEmployee.DepartmentId = employeeDto.DepartmentId;
 
             return _employeeRepository.Update(existingEmployee);
         }
