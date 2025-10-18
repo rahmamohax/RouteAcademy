@@ -1,3 +1,4 @@
+using CompanyProjectBLL.Profiles;
 using CompanyProjectBLL.Services.Classes;
 using CompanyProjectBLL.Services.Interfaces;
 using CompanyProjectDAL.Data.Contects;
@@ -20,8 +21,13 @@ namespace CompanyProjectPL
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+
+
+            builder.Services.AddAutoMapper(x => x.AddProfile(new MappingProfile()));
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

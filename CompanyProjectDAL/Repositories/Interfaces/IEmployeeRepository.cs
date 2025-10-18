@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CompanyProjectDAL.Repositories.Interfaces
 {
-    public interface IDepartmentRepository : IGenericRepository<Department>
+    public interface IEmployeeRepository : IGenericRepository<Employee>
     {
     }
 }

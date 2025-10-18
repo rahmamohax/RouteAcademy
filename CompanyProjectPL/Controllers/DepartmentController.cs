@@ -29,7 +29,7 @@ namespace CompanyProjectPL.Controllers
                 try
                 {
                     var res =_departmentService.AddDepartment(createDepartment);
-                    return (res) ? View(nameof(Index)) : View(createDepartment);
+                    return (res) ? RedirectToAction(nameof(Index)) : View(createDepartment);
                 }
                 catch (Exception)
                 {
@@ -46,7 +46,7 @@ namespace CompanyProjectPL.Controllers
         public IActionResult Details(int? id)
         {
             if (!id.HasValue) return BadRequest();
-            var department = _departmentService.GetDepartmentDetails(id.Value);
+            var department = _departmentService.GetDepartmentById(id.Value);
             if (department is null) return NotFound();
             return View(department);
         }
@@ -56,7 +56,7 @@ namespace CompanyProjectPL.Controllers
         public ActionResult Edit(int? id)
         {
             if(!id.HasValue) return BadRequest();
-            var department = _departmentService.GetDepartmentDetails(id.Value); // must map to updateViewModel
+            var department = _departmentService.GetDepartmentById(id.Value); // must map to updateViewModel
             if (department is null) return NotFound();
 
             var ViewModel = new UpdateDepartmentDto()

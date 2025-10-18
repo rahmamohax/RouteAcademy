@@ -1,5 +1,4 @@
 ﻿using CompanyProjectDAL.Data.Contects;
-using CompanyProjectDAL.Models;
 using CompanyProjectDAL.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -9,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace CompanyProjectDAL.Repositories.Classes
 {
-    public class DepartmentRepository : GenericRepository<Department>, IDepartmentRepository
+    public class EmployeeRepository : GenericRepository<Employee>, IEmployeeRepository
     {
-        public DepartmentRepository(CompanyDbContext _dbContext) : base(_dbContext)
+        public EmployeeRepository(CompanyDbContext _dbContext) : base(_dbContext)
         {
         }
     }

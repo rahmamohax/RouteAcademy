@@ -10,7 +10,7 @@ namespace CompanyProjectBLL.Services.Interfaces
     public interface IDepartmentService
     {
         public IEnumerable<DepartmentDto> GetAllDepartments();
-        public DepartmentDto? GetDepartmentDetails(int id);
+        public DepartmentDto? GetDepartmentById(int id);
         public bool AddDepartment(CreateDepartmentDto departmentDto);
         public bool UpdateDepartment(int id, UpdateDepartmentDto departmentDto);
         public bool DeleteDepartment(int id);

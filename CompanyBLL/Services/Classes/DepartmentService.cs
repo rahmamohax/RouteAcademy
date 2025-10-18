@@ -1,6 +1,7 @@
 ﻿using CompanyProjectBLL.DTOs.DepartmentDtos;
 using CompanyProjectBLL.Factories;
 using CompanyProjectBLL.Services.Interfaces;
+using CompanyProjectDAL.Models;
 using CompanyProjectDAL.Repositories.Interfaces;
 
 namespace CompanyProjectBLL.Services.Classes
@@ -22,7 +23,7 @@ namespace CompanyProjectBLL.Services.Classes
             return departments.Select(x => x.ToDepartmentDto());
         }
 
-        public DepartmentDto? GetDepartmentDetails(int id)
+        public DepartmentDto? GetDepartmentById(int id)
         {
             var department= _departmentRepository.GetById(id);
             if (department is null) return null;
