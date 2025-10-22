@@ -9,7 +9,7 @@ namespace CompanyProjectBLL.Services.Interfaces
 {
     public interface IEmployeeService
     {
-        public IEnumerable<EmployeeDto> GetAllEmployees();
+        public IEnumerable<EmployeeDto> GetAllEmployees(string? EmployeeSearchName);
         public EmployeeDto? GetEmployeeById(int id);
         public bool AddEmployee(CreateEmployeeDto employeeDto);
         public bool UpdateEmployee(int id, UpdateEmployeeDto employeeDto);

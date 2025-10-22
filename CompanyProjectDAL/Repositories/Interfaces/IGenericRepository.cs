@@ -6,8 +6,8 @@ namespace CompanyProjectDAL.Repositories.Interfaces
     {
         TEntity? GetById(int id);
         IEnumerable<TEntity> GetAll(Func<TEntity, bool>? condition = null);
-        bool Add(TEntity entity);
-        bool Update(TEntity entity);
-        bool Delete(TEntity entity);
+        void Add(TEntity entity);
+        void Update(TEntity entity);
+        void Delete(TEntity entity);
     }
 }
