@@ -1,9 +1,12 @@
 using CompanyProjectBLL.Profiles;
+using CompanyProjectBLL.Services.AttachmentService;
 using CompanyProjectBLL.Services.Classes;
 using CompanyProjectBLL.Services.Interfaces;
 using CompanyProjectDAL.Data.Contects;
+using CompanyProjectDAL.Models;
 using CompanyProjectDAL.Repositories.Classes;
 using CompanyProjectDAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,11 +28,20 @@ namespace CompanyProjectPL
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
                     .UseLazyLoadingProxies();
             });
-            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            //builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            //builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IAttachmentService, AttachmentService>();
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opts =>
+            {
+                //opts.User.RequireUniqueEmail = true    //by default
+
+            })
+                .AddEntityFrameworkStores<CompanyDbContext>().AddDefaultTokenProviders();
 
 
             builder.Services.AddAutoMapper(x => x.AddProfile(new MappingProfile()));
@@ -52,7 +64,7 @@ namespace CompanyProjectPL
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=Register}/{id?}");
 
             app.Run();
         }

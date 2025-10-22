@@ -11,9 +11,10 @@ namespace CompanyProjectPL.Controllers
 {
     public class EmployeeController(IEmployeeService _employeeService) : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(string? EmployeeSearchName)
         {
-            var employees = _employeeService.GetAllEmployees();
+            var employees = _employeeService.GetAllEmployees(EmployeeSearchName);
+            ViewData["EmployeeSearchName"] = EmployeeSearchName;
             return View(employees);
         }
 
@@ -51,7 +52,8 @@ namespace CompanyProjectPL.Controllers
                         HiringDate = createEmployee.HiringDate,
                         IsActive = createEmployee.IsActive,
                         PhoneNumber = createEmployee.PhoneNumber,
-                        Salary = createEmployee.Salary
+                        Salary = createEmployee.Salary,
+                        Img = createEmployee.Img                 
                     };
 
                     var res = _employeeService.AddEmployee(dto);
@@ -88,7 +90,7 @@ namespace CompanyProjectPL.Controllers
                 IsActive = employee.IsActive,
                 PhoneNumber = employee.PhoneNumber,
                 Salary = employee.Salary,
-                HiringDate =DateOnly.FromDateTime(employee.HiringDate.Value) 
+                HiringDate =DateOnly.FromDateTime( employee.HiringDate.Value) 
             };
             return View(mappedEmp);
         }
