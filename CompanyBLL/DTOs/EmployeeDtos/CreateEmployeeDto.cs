@@ -1,5 +1,4 @@
 ﻿using CompanyProjectDAL.Models;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,8 +10,6 @@ namespace CompanyProjectBLL.DTOs.EmployeeDtos
 {
     public class CreateEmployeeDto
     {
-        public IFormFile? Img { get; set; }
-
         [Required]
         [MaxLength(50, ErrorMessage = "Max length should be 50 character")]
         [MinLength(5, ErrorMessage = "Min length should be 5 characters")]

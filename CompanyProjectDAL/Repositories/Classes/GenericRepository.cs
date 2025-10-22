@@ -1,4 +1,5 @@
-﻿using CompanyProjectDAL.Data.Contects;
+﻿
+using CompanyProjectDAL.Data.Contects;
 using CompanyProjectDAL.Repositories.Interfaces;
 
 namespace CompanyProjectDAL.Repositories.Classes
@@ -6,26 +7,22 @@ namespace CompanyProjectDAL.Repositories.Classes
     public class GenericRepository<TEntity>(CompanyDbContext _dbContext) : IGenericRepository<TEntity>  where TEntity : BaseEntity, new()
     {
         public IEnumerable<TEntity> GetAll(Func<TEntity, bool>? condition = null)
-        {
-            if (condition == null)
-                return _dbContext.Set<TEntity>().AsNoTracking().Where(x => x.IsDeleted == false).ToList();
-            return _dbContext.Set<TEntity>().AsNoTracking()
-                .Where(condition)
-                .Where(x => x.IsDeleted == false)
-                .ToList();
-        }
+            => _dbContext.Set<TEntity>().AsNoTracking().Where(x => x.IsDeleted == false).ToList();
 
         public TEntity? GetById(int id) => _dbContext.Set<TEntity>().Find(id);
-        public void Add(TEntity entity) {
+        public bool Add(TEntity entity) {
             _dbContext.Set<TEntity>().Add(entity);
+            return _dbContext.SaveChanges() > 0;
         }
-        public void Update(TEntity entity)
+        public bool Update(TEntity entity)
         {
             _dbContext.Set<TEntity>().Update(entity);
+            return _dbContext.SaveChanges() > 0;
         }
-        public void Delete(TEntity entity)
+        public bool Delete(TEntity entity)
         {
             _dbContext.Set<TEntity>().Remove(entity);
+            return _dbContext.SaveChanges() > 0;
         }
 
     }

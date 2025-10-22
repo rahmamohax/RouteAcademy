@@ -45,7 +45,5 @@ namespace CompanyProjectPL.ViewModels
 
         [Display(Name ="Department")]
         public int? DepartmentId { get; set; }
-
-        public IFormFile Img { get; set; }
     }
 }

@@ -6,17 +6,11 @@ using CompanyProjectDAL.Repositories.Interfaces;
 
 namespace CompanyProjectBLL.Services.Classes
 {
-    public class DepartmentService : IDepartmentService
+    public class DepartmentService(IDepartmentRepository _departmentRepository) : IDepartmentService
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public DepartmentService(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
         public IEnumerable<DepartmentDto> GetAllDepartments()
         {
-            var departments = _unitOfWork.DepartmentRepository.GetAll();
+            var departments = _departmentRepository.GetAll();
             if (departments is null) return Enumerable.Empty<DepartmentDto>();
             //return departments.Select(x => new DepartmentDto
             //{
@@ -31,7 +25,7 @@ namespace CompanyProjectBLL.Services.Classes
 
         public DepartmentDto? GetDepartmentById(int id)
         {
-            var department= _unitOfWork.DepartmentRepository.GetById(id);
+            var department= _departmentRepository.GetById(id);
             if (department is null) return null;
 
             return department.ToDepartmentDetailedDto();
@@ -39,22 +33,19 @@ namespace CompanyProjectBLL.Services.Classes
 
         public bool DeleteDepartment(int id)
         {
-            var department = _unitOfWork.DepartmentRepository.GetById(id);
+            var department = _departmentRepository.GetById(id);
             if (department is null) return false;
-             _unitOfWork.DepartmentRepository.Delete(department);
-            return _unitOfWork.SaveChanges();
+            return _departmentRepository.Delete(department);
         }
 
         public bool AddDepartment(CreateDepartmentDto departmentDto)
         {
-             _unitOfWork.DepartmentRepository.Add(departmentDto.AddDepartment());
-            return _unitOfWork.SaveChanges();
-
+            return _departmentRepository.Add(departmentDto.AddDepartment());
         }
 
         public bool UpdateDepartment(int id, UpdateDepartmentDto departmentDto)
         {
-            var department = _unitOfWork.DepartmentRepository.GetById(id);
+            var department = _departmentRepository.GetById(id);
             if (department is null) return false;
 
             //return _departmentRepository.Update(departmentDto.UpdateDepartment());
@@ -64,8 +55,7 @@ namespace CompanyProjectBLL.Services.Classes
             department.Code = departmentDto.Code;
             department.LastModifiedOn = DateTime.Now;
 
-             _unitOfWork.DepartmentRepository.Update(department);
-            return _unitOfWork.SaveChanges();
+            return _departmentRepository.Update(department);
         }
     }
 }
