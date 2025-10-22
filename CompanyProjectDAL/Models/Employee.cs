@@ -18,7 +18,6 @@ namespace CompanyProjectDAL.Models
     }
     public class Employee : BaseEntity
     {
-        public string? ImgName { get; set; }
         public string Name { get; set; } = string.Empty;
         public int Age { get; set; }
         public bool IsActive { get; set; }
@@ -29,6 +28,9 @@ namespace CompanyProjectDAL.Models
         public DateTime HiringDate { get; set; }
         public Gender Gender { get; set; }
         public EmployeeType EmployeeType { get; set; }
+
+        public int? DepartmentId { get; set; }
+        public virtual Department? Department { get; set; }
     }
 
     //[Owned]

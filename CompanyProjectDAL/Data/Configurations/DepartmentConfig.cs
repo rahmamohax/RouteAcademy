@@ -10,6 +10,11 @@ namespace CompanyProjectDAL.Data.Configurations
             builder.Property(x => x.Code).HasColumnType("varchar(20)");
             builder.Property(x => x.Description).HasColumnType("varchar(150)");
 
+            builder.HasMany(x => x.Employees)
+                .WithOne(x => x.Department)
+                .HasForeignKey(x => x.DepartmentId)
+                .OnDelete(DeleteBehavior.SetNull);
+
             base.Configure(builder);
         }
     }
