@@ -5,7 +5,7 @@ using GymMangBLL.ViewModels.PlanViewModels;
 using GymMangBLL.ViewModels.SessionViewModels;
 using GymMangBLL.ViewModels.TrainerViewModels;
 using GymMangDAL.Entities;
-using Member = GymMangDAL.Entities.Member;
+//using Member = GymMangDAL.Entities.Member;
 
 namespace GymMangBLL
 {

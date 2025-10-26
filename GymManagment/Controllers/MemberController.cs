@@ -71,13 +71,10 @@ namespace GymManagment.Controllers
             }
             var result = _memberService.CreateMember(createMember);
             if (result)
-            {
                 TempData["SuccessMessage"] = "Member Created Successfully";
-            }
+
             else
-            {
                 TempData["ErrorMessage"] = "Creation Has Failed, Check Phone and Email";
-            }
             return RedirectToAction(nameof(Index));
         }
         #endregion

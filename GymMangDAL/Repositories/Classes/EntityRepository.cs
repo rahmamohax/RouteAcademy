@@ -2,15 +2,11 @@
 using GymMangDAL.Entities;
 using GymMangDAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace GymMangDAL.Repositories.Classes
 {
-    public class EntityRepository<TEntity> : Interfaces.IEntityRepository<TEntity> where TEntity : BaseEntity, new()
+    public class EntityRepository<TEntity> : IEntityRepository<TEntity> where TEntity : BaseEntity, new()
     {
         private readonly GymDbContext _dbContext;
 
