@@ -36,7 +36,7 @@ namespace GymManagment.Controllers
         }
 
         #region Edit Plan
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             if (id <= 0)
             {
@@ -54,7 +54,7 @@ namespace GymManagment.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit([FromForm] int id, UpdatePlanViewModel updatePlan)
+        public IActionResult Edit([FromForm] int id, UpdatePlanViewModel updatePlan)
         {
             if(!ModelState.IsValid)
             {
@@ -72,7 +72,7 @@ namespace GymManagment.Controllers
         }
 
         [HttpPost]
-        public ActionResult Activation( int id)
+        public IActionResult Activation( int id)
         {
             var status = _planService.ToggleStatus(id);
             if (status)

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace GymMangBLL.Services.Classes
 {
-    internal class SessionService : ISessionService
+    public class SessionService : ISessionService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -58,7 +58,6 @@ namespace GymMangBLL.Services.Classes
             return true;
 
         }
-
         private bool DoesTrainerExists(int id)
         {
             return _unitOfWork.GetRepository<Trainer>().GetAll(x => x.Id == id).Any();
@@ -66,11 +65,10 @@ namespace GymMangBLL.Services.Classes
         private bool DoesCategoryExists(int id)
         {
             return _unitOfWork.GetRepository<Category>().GetById(id) is not null;
-        }
-         
+        }        
         private bool isDateTimeValid(DateTime start, DateTime end)
         {
-            return (start < end);
+            return (start < end) && DateTime.Now < start;
         }
         #endregion
 
@@ -179,6 +177,30 @@ namespace GymMangBLL.Services.Classes
 
                 throw;
             }
+        }
+
+        public IEnumerable<TrainerSelectViewModel> GetTrainers()
+        {
+            var trainers = _unitOfWork.GetRepository<Trainer>().GetAll();
+            if (trainers is null) return Enumerable.Empty<TrainerSelectViewModel>();
+
+            return trainers.Select(x => new TrainerSelectViewModel()
+            {
+                Id = x.Id,
+                Name = x.Name,
+            });
+        }
+
+        public IEnumerable<CategorySelectViewModel> GetCategories()
+        {
+            var categories = _unitOfWork.GetRepository<Category>().GetAll();
+            if (categories is null) return Enumerable.Empty<CategorySelectViewModel>();
+
+            return categories.Select(x => new CategorySelectViewModel()
+            {
+                Id = x.Id,
+                Name = x.CategoryName
+            }); 
         }
     }
 }

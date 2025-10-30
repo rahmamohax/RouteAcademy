@@ -13,14 +13,14 @@ namespace GymManagment.Controllers
             this._trainerService = trainerService;
         }
 
-        public ActionResult Index(int id)
+        public IActionResult Index(int id)
         {
             var trainers = _trainerService.GetAllTrainers();
             return View(trainers);
 
         }
 
-        public ActionResult TrainerDetails(int id)
+        public IActionResult TrainerDetails(int id)
         {
             if (id <= 0)
             {
@@ -40,13 +40,13 @@ namespace GymManagment.Controllers
 
         #region Create trainer
         //get
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult CreateTrainer(CreateTrainerViewModel createTrainer)
+        public IActionResult CreateTrainer(CreateTrainerViewModel createTrainer)
         {
             if (!ModelState.IsValid)
             {
@@ -67,7 +67,7 @@ namespace GymManagment.Controllers
         #endregion
 
         #region Edit trainer
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             if (id <= 0)
             {
@@ -84,7 +84,7 @@ namespace GymManagment.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit([FromRoute] int id, UpdateTrainerViewModel updatetrainer)
+        public IActionResult Edit([FromRoute] int id, UpdateTrainerViewModel updatetrainer)
         {
             if (!ModelState.IsValid)
             {
@@ -104,7 +104,7 @@ namespace GymManagment.Controllers
         #endregion
 
         #region Delete trainer
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             if (id <= 0)
             {
@@ -122,7 +122,7 @@ namespace GymManagment.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteConfirmed([FromForm] int id)
+        public IActionResult DeleteConfirmed([FromForm] int id)
         {
             var delete = _trainerService.DeleteTrainer(id);
             if (delete)

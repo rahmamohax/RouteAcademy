@@ -21,7 +21,7 @@ namespace GymMangBLL.ViewModels.SessionViewModels
         public string DateDisplay => $"{StartDate: MMM dd, yyyy}";
         public string TimeRangeDisplay => $"{StartDate:hh:mm tt} - {EndDate:hh:mm tt}";
         public TimeSpan Duration => EndDate - StartDate;    
-        public string Statud
+        public string Status
         {
             get {
                 if (StartDate > DateTime.Now)
