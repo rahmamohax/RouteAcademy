@@ -1,10 +1,13 @@
 using GymMangBLL;
+using GymMangBLL.Services.Attachments;
 using GymMangBLL.Services.Classes;
 using GymMangBLL.Services.Interfaces;
 using GymMangDAL.Data.Contexts;
 using GymMangDAL.Data.DataSeed;
+using GymMangDAL.Entities;
 using GymMangDAL.Repositories.Classes;
 using GymMangDAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 namespace GymManagment
 {
@@ -29,7 +32,19 @@ namespace GymManagment
             builder.Services.AddScoped<IPlanService, PlanService>();
             builder.Services.AddScoped<ITrainerService, TrainerService>();
             builder.Services.AddScoped<ISessionService, SessionService>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
+            builder.Services.AddScoped<IAttachmentService, AttachmentService>();
 
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+            {
+                config.User.RequireUniqueEmail = true;
+            }).AddEntityFrameworkStores<GymDbContext>();
+
+            builder.Services.ConfigureApplicationCookie(opt =>
+            {
+                opt.LoginPath = "/Acoount/Login";
+                opt.AccessDeniedPath = "/Account/AccessDenied";
+            });
 
             builder.Services.AddAutoMapper(x => x.AddProfile(new Mappingprofiles()));
 
@@ -40,11 +55,15 @@ namespace GymManagment
             using var scope = app.Services.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<GymDbContext>();
 
+            var RoleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
             var pendingMigrations = dbContext.Database.GetPendingMigrations(); //Get Only Pending migrations
             if (pendingMigrations?.Any() ?? false)
                 dbContext.Database.Migrate();
 
-            GymDbContectSeeding.DataSeed(dbContext);
+            GymDbContextSeeding.DataSeed(dbContext);
+            IdentityDbContextSeeding.SeedData(RoleManager, UserManager);
             #endregion
 
             // Configure the HTTP request pipeline.
@@ -60,11 +79,12 @@ namespace GymManagment
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id:int?}");
+                pattern: "{controller=account}/{action=login}/{id:int?}");
 
             app.Run();
         }

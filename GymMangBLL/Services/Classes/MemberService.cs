@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
+using GymMangBLL.Services.Attachments;
 using GymMangBLL.Services.Interfaces;
 using GymMangBLL.ViewModels.MemberViewModels;
 using GymMangDAL.Entities;
 
 namespace GymMangBLL.Services.Classes
 {
-    public class MemberService(IUnitOfWork _unitOfWork, IMapper _mapper) : IMemberService
+    public class MemberService(IUnitOfWork _unitOfWork, IMapper _mapper, IAttachmentService _attachmentService) : IMemberService
     {
         #region Helper Methods
         private bool isEmailExists(string email)
@@ -21,12 +22,20 @@ namespace GymMangBLL.Services.Classes
         public bool CreateMember(CreateMemberViewModel createdMember)
         {
             if (isEmailExists(createdMember.Email) || isPhoneExists(createdMember.Phone)) return false;
+            var photoName = _attachmentService.Upload("members", createdMember.PhotoFile);
+            if (string.IsNullOrEmpty(photoName)) return false;
 
             var member = _mapper.Map<Member>(createdMember);
+            member.Photo = photoName;
 
              _unitOfWork.GetRepository<Member>().Add(member); //added locally!
-            return _unitOfWork.SaveChanges() > 0;
-
+            var isCreated =  _unitOfWork.SaveChanges() > 0;
+            if (!isCreated)
+            {
+                _attachmentService.Delete(photoName, "members");
+                return false;
+            }
+            return isCreated;
         }
 
         public IEnumerable<MemberViewModel> GetAllMembers()
@@ -125,7 +134,12 @@ namespace GymMangBLL.Services.Classes
                         _unitOfWork.GetRepository<MemberShip>().Delete(membership);
 
                  _unitOfWork.GetRepository<Member>().Delete(member);
-                return _unitOfWork.SaveChanges() > 0 ;
+
+                var isDeleted = _unitOfWork.SaveChanges() > 0 ;
+
+                if (isDeleted)
+                    _attachmentService.Delete(member.Photo, "members");
+                return isDeleted;
             }
             catch (Exception)
             {

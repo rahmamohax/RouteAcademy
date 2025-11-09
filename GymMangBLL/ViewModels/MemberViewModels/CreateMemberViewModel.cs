@@ -1,4 +1,5 @@
 ﻿using GymMangDAL.Entities;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -6,7 +7,9 @@ namespace GymMangBLL.ViewModels.MemberViewModels
 {
     public class CreateMemberViewModel
     {
-        public string? Photo { get; set; }
+        [Required(ErrorMessage = "Profile Photo is Required")]
+        [Display(Name = "Profile Photo")]
+        public IFormFile PhotoFile { get; set; } = null!;
 
         [Required(ErrorMessage ="Name Field is Required")]
         [StringLength(50, MinimumLength = 3)]

@@ -9,7 +9,7 @@ namespace GymMangDAL.Entities
     public class Member : GymUser
     {
         // JoinDate == CreatedAt
-        public string? Photo { get; set; }
+        public string Photo { get; set; } = null!;
 
         public HealthRecord HealthRecord { get; set; } = null!;
 
