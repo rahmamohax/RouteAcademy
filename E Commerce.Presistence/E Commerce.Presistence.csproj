@@ -15,4 +15,8 @@
     <ProjectReference Include="..\E Commerce.Services\E Commerce.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\DataSeed\JSONFiles\" />
+  </ItemGroup>
+
 </Project>

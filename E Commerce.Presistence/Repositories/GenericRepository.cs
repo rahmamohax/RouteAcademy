@@ -28,16 +28,10 @@ namespace E_Commerce.Presistence.Repositories
 
         public void Delete(TEntity entity) => _dbContext.Set<TEntity>().Remove(entity);
 
-        public Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity, T> specifications)
+        public async Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity, T> specifications)
         {
-            IQueryable<TEntity> query = _dbContext.Set<TEntity>();
-            if(specifications != null)
-            {
-                if(specifications.IncludeExpressions is not null && specifications.IncludeExpressions.Any())
-                {
-
-                }
-            }
+            IQueryable<TEntity> query = SpecificationsEvaluater.CreateQuery(_dbContext.Set<TEntity>(), specifications);
+            return await query.ToListAsync();
         }
     }
 }
