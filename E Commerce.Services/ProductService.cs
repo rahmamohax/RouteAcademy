@@ -2,6 +2,8 @@
 using E_Commerce.Domain.Contracts;
 using E_Commerce.Domain.Entities.ProductModule;
 using E_Commerce.Service_Abstraction;
+using E_Commerce.Services.Specifications;
+using E_Commerce.Shared;
 using E_Commerce.Shared.DTOs.ProductDTOs;
 using System;
 using System.Collections.Generic;
@@ -28,11 +30,22 @@ namespace E_Commerce.Services
             return _mapper.Map<IEnumerable<BrandDTO>>(brands);
         }
 
-        public async Task<IEnumerable<ProductDTO>> GetAllProductsAsync()
+        public async Task<PaginatedResult<ProductDTO>> GetAllProductsAsync(ProductQueryParams queryParams)
         {
-            var products = await _unitOfWork.GetRepository<Product, int>().GetAllAsync();
+            //Specification -> Get all products with brand and type
+            //and filter with brand id or type id if needed
 
-            return _mapper.Map<IEnumerable<ProductDTO>>(products);
+            var repo = _unitOfWork.GetRepository<Product, int>();
+            var spec = new AllProductSpecifications(queryParams);
+            var products = await repo.GetAllAsync(spec);
+
+            var data =  _mapper.Map<IEnumerable<ProductDTO>>(products);
+            var dataCount = data.Count();
+
+            var countSpec = new ProductCountSpecification(queryParams);
+            var totaProducts = await repo.CountAsync(countSpec);
+
+            return new PaginatedResult<ProductDTO>(queryParams.PageIndex, dataCount, totaProducts, data);
         }
 
         public async Task<IEnumerable<TypeDTO>> GetAllTypesAsync()
@@ -44,7 +57,9 @@ namespace E_Commerce.Services
 
         public async Task<ProductDTO> GetProductByIdAsync(int id)
         {
-            var product = await _unitOfWork.GetRepository<Product, int>().GetByIdAsync(id);
+            // Specification - > Get Product Id including [Brand and Type]
+            var spec = new AllProductSpecifications(id);
+            var product = await _unitOfWork.GetRepository<Product, int>().GetByIdAsync(spec);
 
             return _mapper.Map<ProductDTO>(product);
         }

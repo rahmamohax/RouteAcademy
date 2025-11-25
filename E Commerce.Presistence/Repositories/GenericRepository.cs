@@ -33,5 +33,15 @@ namespace E_Commerce.Presistence.Repositories
             IQueryable<TEntity> query = SpecificationsEvaluater.CreateQuery(_dbContext.Set<TEntity>(), specifications);
             return await query.ToListAsync();
         }
+
+        public async Task<TEntity?> GetByIdAsync(ISpecifications<TEntity, T> specifications)
+        {
+            return await SpecificationsEvaluater.CreateQuery(_dbContext.Set<TEntity>(), specifications).FirstOrDefaultAsync();
+        }
+
+        public async Task<int> CountAsync(ISpecifications<TEntity, T> specifications)
+        {
+            return await SpecificationsEvaluater.CreateQuery(_dbContext.Set<TEntity>(), specifications).CountAsync(); 
+        }
     }
 }
