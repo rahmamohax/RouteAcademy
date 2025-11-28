@@ -1,6 +1,9 @@
 using E_Commerce.Domain.Contracts;
+using E_Commerce.Domain.Entities.IdentityModule;
 using E_Commerce.Presistence.Data.DataSeed;
 using E_Commerce.Presistence.Data.DbContexts;
+using E_Commerce.Presistence.IdentityData.DataSeed;
+using E_Commerce.Presistence.IdentityData.DbContexts;
 using E_Commerce.Presistence.Repositories;
 using E_Commerce.Service_Abstraction;
 using E_Commerce.Services;
@@ -8,9 +11,13 @@ using E_Commerce.Services.MappingProfiles;
 using E_Commerce.Web.CustomMiddlewares;
 using E_Commerce.Web.Extentions;
 using E_Commerce.Web.Factories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
+using System.Text;
 
 namespace E_Commerce.Web
 {
@@ -31,7 +38,8 @@ namespace E_Commerce.Web
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-            builder.Services.AddScoped<IDataInitializer, DataInitializer>();
+            builder.Services.AddKeyedScoped<IDataInitializer, DataInitializer>("Default");
+            builder.Services.AddKeyedScoped<IDataInitializer, IdentityDataInitializer>("Identity");
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddTransient<ProductPictureUrlResolver>();
@@ -54,6 +62,34 @@ namespace E_Commerce.Web
             {
                 opt.InvalidModelStateResponseFactory = ApiResponseFactory.GenerateApiValidationResponse;
             });
+
+            builder.Services.AddDbContext<StoreIdentityDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"));
+            });
+
+            builder.Services.AddIdentityCore<ApplicationUser>().AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<StoreIdentityDbContext>();
+
+            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+
+            builder.Services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(opt =>
+            {
+                opt.SaveToken = true;
+                opt.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = builder.Configuration["JwtOptions:Issuer"],
+                    ValidAudience = builder.Configuration["JwtOptions:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtOptions:SecretKey"]!))
+                };
+            });
             #endregion
 
             var app = builder.Build();
@@ -61,7 +97,10 @@ namespace E_Commerce.Web
             #region Data Seeding
 
             await app.MigrateDatabaseAsync();
+            await app.MigrateIdentityDatabaseAsync();
             await app.SeedDatabaseAsync();
+            await app.SeedIdentityDatabaseAsync();
+
 
             #endregion
 
@@ -79,6 +118,7 @@ namespace E_Commerce.Web
 
 
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
